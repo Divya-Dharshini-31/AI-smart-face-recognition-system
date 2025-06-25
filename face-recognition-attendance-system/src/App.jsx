@@ -1,9 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import OTPVerification from "./pages/OTPVerification";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/SampleDashboard";
+import AddEditUser from "./pages/AddEditUser";
+
 
 function App() {
   return (
@@ -14,6 +17,8 @@ function App() {
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/add-user" element={<AddEditUser />} />
+
       </Routes>
     </Router>
   );
