@@ -6,6 +6,8 @@ import OTPVerification from "./pages/OTPVerification";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/SampleDashboard";
 import AddEditUser from "./pages/AddEditUser";
+import AdminReportPage from "./pages/AdminReportPage";
+
 
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-user" element={<AddEditUser />} />
+        <Route path="/admin-report" element={<AdminReportPage />} />
 
       </Routes>
     </Router>
