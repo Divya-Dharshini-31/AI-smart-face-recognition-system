@@ -7,6 +7,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/SampleDashboard";
 import AddEditUser from "./pages/AddEditUser";
 import AdminReportPage from "./pages/AdminReportPage";
+import AttendanceHistory from "./pages/AttendanceHistory";
 
 
 
@@ -21,6 +22,9 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-user" element={<AddEditUser />} />
         <Route path="/admin-report" element={<AdminReportPage />} />
+        <Route path="/atten-hist" element={<AttendanceHistory />} />
+
+
 
       </Routes>
     </Router>
