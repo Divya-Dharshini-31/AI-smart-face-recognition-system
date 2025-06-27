@@ -8,14 +8,14 @@ import Dashboard from "./pages/SampleDashboard";
 import AddEditUser from "./pages/AddEditUser";
 import AdminReportPage from "./pages/AdminReportPage";
 import AttendanceHistory from "./pages/AttendanceHistory";
-
+import AdminDashboard from './pages/AdminDashboard';
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<AdminDashboard />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />

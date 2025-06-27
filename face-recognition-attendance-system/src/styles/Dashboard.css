@@ -1,0 +1,26 @@
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+}
+
+.main-content {
+  background-color: hsl(193, 86%, 83%); /* Light blue background */
+  min-height: 100vh;
+}
+
+.nav-link:hover {
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+.nav-link {
+  font-weight: 500;
+}
+
+.shadow-sm {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
