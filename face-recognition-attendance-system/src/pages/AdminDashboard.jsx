@@ -56,7 +56,7 @@ function AdminDashboard() {
           {/* Chart Section with Recharts code inside */}
           <div className="bg-white p-4 rounded shadow-sm mb-4 text-center" style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h5 className="fw-bold text-dark mb-3 ">Today's Attendance Stats</h5>
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer width="100%" height={200}>
               <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="status" label={{ value: 'Status', position: 'insideBottom', offset: -5 }} />
