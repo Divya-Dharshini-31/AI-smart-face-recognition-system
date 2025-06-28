@@ -1,26 +1,55 @@
+/* Make the entire layout fill the viewport */
+.dashboard-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* The section that holds sidebar + main content */
+.dashboard-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Sidebar stays fixed width */
 .sidebar {
   width: 250px;
   min-height: 100vh;
+  background-color: #fff;
+  border-right: 1px solid #dee2e6;
 }
 
+/* Main content area scrolls internally if needed */
 .main-content {
-  background-color: hsl(193, 86%, 83%); /* Light blue background */
-  min-height: 100vh;
+  flex-grow: 1;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+  height: calc(100vh - 70px); /* Subtract topbar height */
 }
 
-.nav-link:hover {
-  background-color: #f2f2f2;
-  border-radius: 5px;
+/* Cards styling */
+.card-summary {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
 
-.nav-link {
-  font-weight: 500;
+/* Buttons alignment */
+.report-buttons {
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-.shadow-sm {
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1) !important;
-}
-
-.dropdown-toggle {
-  cursor: pointer;
+/* Chart container */
+.chart-container {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
 }

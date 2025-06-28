@@ -1,13 +1,14 @@
 .sidebar {
   width: 220px;
   min-height: 100vh;
+  
 }
 .nav-link:hover {
   background-color: #b0b0b0;
   border-radius: 5px;
 }
 .nav{
-    padding-top: 30px;
+    padding-top: 15px;
 }
 .nav-link a{
     padding-left: 25px;
