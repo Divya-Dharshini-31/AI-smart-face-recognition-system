@@ -32,21 +32,21 @@ function AdminDashboard() {
           </div>
 
           {/* Cards */}
-          <div className="row text-center mb-4" style={{paddingLeft:'100px'}}>
+          <div className="row text-center mb-3" style={{paddingLeft:'100px'}}>
             <div className="col-md-4 mb-2">
-              <div className="bg-white p-3 rounded-5 shadow-sm" style={{ maxWidth: '300px', border: '2px solid grey' }}>
+              <div className="bg-white p-3 rounded-5 shadow-sm" style={{ maxWidth: '280px', border: '2px solid grey' }}>
                 <h3 style={{ fontSize: '35px' }}>1033</h3>
                 <p className="fw-bold text-dark">Total Students</p>
               </div>
             </div>
             <div className="col-md-4 mb-2">
-              <div className="bg-white p-3 rounded-5 shadow-sm" style={{ maxWidth: '300px', border: '2px solid grey' }}>
+              <div className="bg-white p-3 rounded-5 shadow-sm" style={{ maxWidth: '280px', border: '2px solid grey' }}>
                 <h3 style={{ fontSize: '35px' }}>80</h3>
                 <p className="fw-bold text-dark">Total Teachers</p>
               </div>
             </div>
             <div className="col-md-4 mb-2">
-              <div className="bg-white p-3 rounded-5 shadow-sm" style={{ maxWidth: '300px', border: '2px solid grey' }}>
+              <div className="bg-white p-3 rounded-5 shadow-sm" style={{ maxWidth: '280px', border: '2px solid grey' }}>
                 <h3 style={{ fontSize: '35px' }}>4</h3>
                 <p className="fw-bold text-dark">Pending Requests</p>
               </div>
@@ -54,9 +54,9 @@ function AdminDashboard() {
           </div>
 
           {/* Chart Section with Recharts code inside */}
-          <div className="bg-white p-4 rounded shadow-sm mb-4 text-center" style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <div className="bg-white p-4 rounded shadow-sm mb-4 text-center" style={{ maxWidth: '600px', margin: '0 auto' }}>
             <h5 className="fw-bold text-dark mb-3 ">Today's Attendance Stats</h5>
-            <ResponsiveContainer width="100%" height={200}>
+            <ResponsiveContainer width="100%" height={214}>
               <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="status" label={{ value: 'Status', position: 'insideBottom', offset: -5 }} />
