@@ -9,13 +9,16 @@ import AddEditUser from "./pages/AddEditUser";
 import AdminReportPage from "./pages/AdminReportPage";
 import AttendanceHistory from "./pages/AttendanceHistory";
 import AdminDashboard from './pages/AdminDashboard';
+import AdminTeacher from './pages/AdminTeacher';
+
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AdminDashboard />} />
+        {/* <Route path="/" element={<AdminDashboard />} /> */}
+        <Route path="/" element={<AdminTeacher />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
