@@ -98,9 +98,9 @@ function AdminTeacher() {
             </div>
 
             {/* Right Panel */}
-            <div style={{ width: '400px' }}>
+            <div style={{ width: '400px',paddingLeft:'-200px'}}>
               {/* Most Leave List */}
-              <div className="bg-light p-3 rounded-4 mb-4 shadow-sm">
+              <div className="bg-light p-3 rounded-5 mb-4 shadow-sm">
                 <h6 className="fw-bold mb-2">Teachers with most leave:</h6>
                 <ol>
                   <li>Emma John - 12</li>
