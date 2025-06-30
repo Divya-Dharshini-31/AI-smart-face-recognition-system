@@ -50,15 +50,15 @@ function AdminTeacher() {
           <div className="d-flex flex-wrap justify-content-around">
             
             {/* Pie Chart Section */}
-            <div className="bg-white p-4 rounded shadow-sm" style={{ width: '400px', height: '400px',position:'relative'}}>
+            <div className="bg-white p-4 rounded shadow-sm" style={{ width: '600px', height: '400px',position:'relative'}}>
               <h5 className="text-center fw-bold mb-3" style={{ fontFamily: 'sans-serif', fontSize: '30px' }}>Teachers Report</h5>
 
               {/* Pie Chart */}
-              <PieChart width={350} height={250}>
+              <PieChart width={400} height={250}>
                 <Pie
                   data={pieData}
-                  cx="50%"
-                  cy="40%"
+                  cx="70%"
+                  cy="45%"
                   labelLine={false}
                   outerRadius={100}
                   innerRadius={60}
@@ -71,7 +71,7 @@ function AdminTeacher() {
                   ))}
                 </Pie>
               </PieChart>
-              <div style={{ display: 'flex', gap: '20px',paddingLeft:'30px',fontSize:'20px' }}>
+              <div style={{ display: 'flex', gap: '20px',paddingLeft:'120px',fontSize:'20px' }}>
                 {['Present', 'Absent', 'On Leave'].map((label) => {
                 const color = COLORS[pieData.findIndex(d => d.name === label)];
                 return (
@@ -98,10 +98,10 @@ function AdminTeacher() {
             </div>
 
             {/* Right Panel */}
-            <div style={{ width: '400px',paddingLeft:'-200px'}}>
+            <div style={{ width: '350px',marginRight:'100px'}}>
               {/* Most Leave List */}
-              <div className="bg-light p-3 rounded-5 mb-4 shadow-sm">
-                <h6 className="fw-bold mb-2">Teachers with most leave:</h6>
+              <div className="p-3 rounded-5 mb-4 shadow-sm" style={{backgroundColor:'lightblue'}}>
+                <h6 className="fw-bold mb-3" style={{fontSize:'20px'}}>Teachers with most leave:</h6>
                 <ol>
                   <li>Emma John - 12</li>
                   <li>Johnes - 10</li>
@@ -111,14 +111,14 @@ function AdminTeacher() {
               </div>
 
               {/* Send Notification Button */}
-              <div className="bg-light p-3 rounded-4 d-flex justify-content-between align-items-center mb-4 shadow-sm">
-                <span className="fw-bold">Send Notification Alert</span>
-                <i className="bi bi-bell-fill text-danger fs-5"></i>
+              <div className="p-3 rounded-4 d-flex justify-content-between align-items-center mb-4 shadow-sm" style={{backgroundColor:'lightblue'}}>
+                <span className="fw-bold" style={{fontSize:'20px'}}>Send Notification Alert</span>
+                <i className="bi bi-bell-fill text-primary fs-5"></i>
               </div>
 
               {/* Pending Requests */}
-              <div className="bg-light p-3 rounded-4 shadow-sm">
-                <h6 className="fw-bold mb-2">
+              <div className="p-3 rounded-4 shadow-sm" style={{backgroundColor:'lightblue',height:'123px'}}>
+                <h6 className="fw-bold mb-2" style={{fontSize:'20px'}}>
                   Pending Requests <span className="badge bg-secondary">5</span>
                 </h6>
                 <p className="mb-1 text-success">
@@ -133,8 +133,8 @@ function AdminTeacher() {
 
           {/* Bottom Stats */}
           <div className="mt-4 ps-2">
-            <p className="fw-bold text-dark" style={{paddingLeft:'120px',fontFamily:'sans-serif',fontSize:'25px'}}>Total No.of Teachers Present: 75</p>
-            <p className="fw-bold text-dark" style={{paddingLeft:'120px',fontFamily:'sans-serif',fontSize:'25px'}}>Total No.of Teachers Absent: 5</p>
+            <p className="fw-bold text-dark" style={{paddingLeft:'150px',fontFamily:'sans-serif',fontSize:'25px'}}>Total No.of Teachers Present: 75</p>
+            <p className="fw-bold text-dark" style={{paddingLeft:'160px',fontFamily:'sans-serif',fontSize:'25px'}}>Total No.of Teachers Absent: 5</p>
           </div>
 
           {/* Footer */}

@@ -17,7 +17,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<AdminTeacher />} />
+        {/* <Route path="/" element={<SignIn />} /> */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
