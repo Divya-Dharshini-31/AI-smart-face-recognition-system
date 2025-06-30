@@ -7,8 +7,8 @@ function Sidebarsmall() {
 
   const navItems = [
     { icon: 'bi-house-door-fill', label: 'Home', path: '/' },
-    { icon: 'bi-speedometer2', label: 'Dashboard', path: '/' },
-    { icon: 'bi-people-fill', label: 'Users', path: '/add-user' },
+    { icon: 'bi-speedometer2', label: 'Dashboard', path: '/dashboard' },
+    { icon: 'bi-people-fill', label: 'Users', path: '/add-edit-user' },
     { icon: 'bi-calendar-event', label: 'Calendar', path: '/calendar' },
     { icon: 'bi-bar-chart-fill', label: 'Reports', path: '/admin-report' },
     { icon: 'bi-envelope-fill', label: 'Messages', path: '/messages' },

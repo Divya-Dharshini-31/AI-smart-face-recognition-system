@@ -8,7 +8,6 @@ import AttendanceHistory from './pages/AttendanceHistory';
 import LeaveRequests from './pages/LeaveRequests';
 import OTPVerification from './pages/OTPVerification';
 import ResetPassword from './pages/ResetPassword';
-import SampleDashboard from './pages/SampleDashboard';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 
@@ -20,13 +19,13 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/sample-dashboard" element={<SampleDashboard />} />
         <Route path="/add-edit-user" element={<AddEditUser />} />
         <Route path="/admin-report" element={<AdminReportPage />} />
         <Route path="/attendance-history" element={<AttendanceHistory />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
         <Route path="/teachers" element={<AdminTeacher />} />
         <Route path="/leave-requests" element={<LeaveRequests />} />
+       
       </Routes>
     </Router>
   );
