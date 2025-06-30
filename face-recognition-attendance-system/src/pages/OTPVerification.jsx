@@ -1,8 +1,27 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
 import Footer from "../components/Footer";
 
 function OTPVerification() {
   const navigate = useNavigate();
+  const [otp, setOtp] = useState(["", "", "", ""]);
+  const inputRefs = useRef([]);
+
+  const handleChange = (index, value) => {
+    if (isNaN(value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+    if (value && index < 3) inputRefs.current[index + 1].focus();
+  };
+
+  const handleSubmit = () => {
+    if (otp.join("") === "7777") {
+      navigate("/reset-password");
+    } else {
+      alert("Invalid OTP");
+    }
+  };
 
   return (
     <div
@@ -11,36 +30,45 @@ function OTPVerification() {
     >
       <div
         className="row shadow bg-white rounded-4"
-        style={{ width: "900px", height: "90vh", display: "flex", flexDirection: "column" }}
+        style={{
+          width: "900px",
+          height: "90vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         <div className="d-flex flex-grow-1">
-          {/* Left side */}
-          <div className="col-md-6 d-flex flex-column justify-content-center align-items-center p-4">
+          {/* Left Image */}
+          <div className="col-md-6 p-0">
             <img
               src="/otp.jpeg"
               alt="otp"
-              className="img-fluid mb-2"
-              style={{ maxWidth: "150px" }}
+              style={{ width: "120%", height: "100%"}}
             />
-            <h4 className="fw-bold text-center mt-2">OTP Verification</h4>
           </div>
 
-          {/* Right side */}
+          {/* Right Side */}
           <div className="col-md-6 d-flex flex-column justify-content-center align-items-center p-4 text-center">
-            <h3 className="text-primary fw-bold mb-3">Enter OTP Code</h3>
-            <div className="d-flex justify-content-center gap-2 mb-3">
-              {[...Array(4)].map((_, i) => (
+            <h1 className="text-primary fw-bold mb-2">Enter OTP Code</h1>
+
+            <div className="d-flex justify-content-center gap-2 mb-2">
+              {otp.map((digit, i) => (
                 <input
                   key={i}
-                  type="text"
-                  className="form-control text-center"
-                  style={{ width: "50px" }}
                   maxLength={1}
+                  className="form-control text-center"
+                  style={{ height: "70px", width: "60px" }}
+                  ref={(el) => (inputRefs.current[i] = el)}
+                  value={digit}
+                  onChange={(e) => handleChange(i, e.target.value)}
                 />
               ))}
             </div>
-            <p>OTP verified successfully ✅</p>
-            <button className="btn btn-info" onClick={() => navigate("/reset-password")}>
+
+            <button
+              className="btn btn-info py-2 px-4 fs-5 mt-2"
+              onClick={handleSubmit}
+            >
               Next
             </button>
           </div>

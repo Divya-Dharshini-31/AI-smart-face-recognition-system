@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Footer from "../components/Footer";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function ResetPassword() {
   const [pass, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [confirmVisible, setConfirmVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleReset = () => {
-    if (pass === confirm) {
-      navigate("/");
-    } else {
-      alert("Passwords do not match!");
-    }
+    if (pass === confirm) navigate("/");
+    else alert("Passwords do not match!");
   };
 
   return (
@@ -22,42 +22,67 @@ function ResetPassword() {
     >
       <div
         className="row shadow bg-white rounded-4"
-        style={{ width: "900px", height: "90vh", display: "flex", flexDirection: "column" }}
+        style={{
+          width: "900px",
+          height: "90vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         <div className="d-flex flex-grow-1">
-          {/* Left side */}
-          <div className="col-md-6 d-flex flex-column justify-content-center align-items-center p-4">
+          {/* Left Image */}
+          <div className="col-md-6 p-0">
             <img
               src="/reset.jpeg"
               alt="reset"
-              className="img-fluid mb-2"
-              style={{ maxWidth: "150px" }}
+              style={{ width: "105%", height: "95%"}}
             />
-            <h4 className="fw-bold text-center mt-2">Reset Your Password</h4>
           </div>
 
-          {/* Right side */}
-          <div className="col-md-6 d-flex flex-column justify-content-center p-4">
+          {/* Right Section */}
+          <div className="col-md-6 d-flex flex-column justify-content-center p-4 text-center">
             <h3 className="text-primary fw-bold mb-3">Reset Password</h3>
-            <input
-              type="password"
-              className="form-control mb-2 bg-info-subtle"
-              placeholder="Password"
-              onChange={(e) => setPass(e.target.value)}
-            />
-            <input
-              type="password"
-              className="form-control mb-3 bg-info-subtle"
-              placeholder="Confirm Password"
-              onChange={(e) => setConfirm(e.target.value)}
-            />
-            <button className="btn btn-info w-100" onClick={handleReset}>
+
+            <div className="input-group mb-3">
+              <input
+                type={visible ? "text" : "password"}
+                className="form-control bg-info-subtle"
+                placeholder="Password"
+                value={pass}
+                onChange={(e) => setPass(e.target.value)}
+              />
+              <span
+                className="input-group-text"
+                onClick={() => setVisible(!visible)}
+                style={{ cursor: "pointer" }}
+              >
+                {visible ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+
+            <div className="input-group mb-3">
+              <input
+                type={confirmVisible ? "text" : "password"}
+                className="form-control bg-info-subtle"
+                placeholder="Confirm Password"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+              />
+              <span
+                className="input-group-text"
+                onClick={() => setConfirmVisible(!confirmVisible)}
+                style={{ cursor: "pointer" }}
+              >
+                {confirmVisible ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+
+            <button className="btn btn-info py-2 px-4 fs-5 mt-2" onClick={handleReset}>
               Reset Password
             </button>
           </div>
         </div>
 
-        {/* Footer at the bottom */}
         <div className="mt-auto">
           <Footer />
         </div>
