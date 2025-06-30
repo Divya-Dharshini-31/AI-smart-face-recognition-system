@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
@@ -11,7 +12,7 @@ function AdminDashboard() {
     { status: 'Present', students: 750, teachers: 68 },
     { status: 'Absent', students: 120, teachers: 10 },
   ];
-
+const navigate = useNavigate();
   return (
     <div className="d-flex flex-column" style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
       {/* Topbar */}
@@ -75,8 +76,8 @@ function AdminDashboard() {
 
           {/* Report Buttons */}
           <div className="text-center mb-3">
-            <button className="btn btn-info me-3">Students Report</button>
-            <button className="btn btn-info">Teachers Report</button>
+            <button className="btn btn-info me-3" onClick={() => navigate("/students")}>Students Report</button>
+            <button className="btn btn-info" onClick={() => navigate("/teachers")}>Teachers Report</button>
           </div>
 
           <Footer />

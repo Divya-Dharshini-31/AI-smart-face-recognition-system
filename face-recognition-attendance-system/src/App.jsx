@@ -18,8 +18,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AdminStudent />} />
-        {/* <Route path="/" element={<SignIn />} /> */}
+        <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -28,6 +27,7 @@ function App() {
         <Route path="/attendance-history" element={<AttendanceHistory />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
         <Route path="/teachers" element={<AdminTeacher />} />
+        <Route path="/students" element={<AdminStudent />} />
         <Route path="/leave-requests" element={<LeaveRequests />} />
         <Route path="/leave-approval" element={<LeaveApproval />} />
         <Route path="/admin-notif" element={<AdminNotifications />} />
