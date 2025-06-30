@@ -6,6 +6,7 @@ import AdminNotifications from './pages/AdminNotifications';
 import LeaveApproval from './pages/LeaveApproval';
 import AdminReportPage from './pages/AdminReportPage';
 import AdminTeacher from './pages/AdminTeacher';
+import AdminStudent from './pages/AdminStudent';
 import AttendanceHistory from './pages/AttendanceHistory';
 import LeaveRequests from './pages/LeaveRequests';
 import OTPVerification from './pages/OTPVerification';
@@ -17,7 +18,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AdminTeacher />} />
+        <Route path="/" element={<AdminStudent />} />
         {/* <Route path="/" element={<SignIn />} /> */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/otp" element={<OTPVerification />} />
