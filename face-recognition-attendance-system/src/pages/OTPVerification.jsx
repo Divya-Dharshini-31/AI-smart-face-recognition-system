@@ -33,8 +33,7 @@ function OTPVerification() {
         style={{
           width: "900px",
           height: "90vh",
-          display: "flex",
-          flexDirection: "column",
+          display: "flex", flexDirection: "column",
         }}
       >
         <div className="d-flex flex-grow-1">
