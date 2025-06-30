@@ -2,6 +2,8 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import AddEditUser from './pages/AddEditUser';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminNotifications from './pages/AdminNotifications';
+import LeaveApproval from './pages/LeaveApproval';
 import AdminReportPage from './pages/AdminReportPage';
 import AdminTeacher from './pages/AdminTeacher';
 import AttendanceHistory from './pages/AttendanceHistory';
@@ -25,7 +27,8 @@ function App() {
         <Route path="/dashboard" element={<AdminDashboard />} />
         <Route path="/teachers" element={<AdminTeacher />} />
         <Route path="/leave-requests" element={<LeaveRequests />} />
-       
+        <Route path="/leave-approval" element={<LeaveApproval />} />
+        <Route path="/admin-notif" element={<AdminNotifications />} />
       </Routes>
     </Router>
   );

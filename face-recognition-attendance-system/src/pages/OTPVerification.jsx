@@ -25,57 +25,51 @@ function OTPVerification() {
 
   return (
     <div
-      className="container-fluid vh-100 vw-100 d-flex align-items-center justify-content-center"
-      style={{ backgroundColor: "#b7e6ec" }}
+      className="d-flex vh-100 vw-100 align-items-center justify-content-center"
+      style={{ backgroundColor: "#e8e9eb" }}
     >
       <div
-        className="row shadow bg-white rounded-4"
-        style={{
-          width: "900px",
-          height: "90vh",
-          display: "flex", flexDirection: "column",
-        }}
+        className="d-flex shadow rounded overflow-hidden"
+        style={{ width: "80%", maxWidth: "1000px", height: "85%" }}
       >
-        <div className="d-flex flex-grow-1">
-          {/* Left Image */}
-          <div className="col-md-6 p-0">
-            <img
-              src="/otp.jpeg"
-              alt="otp"
-              style={{ width: "120%", height: "100%"}}
-            />
-          </div>
+        {/* Left Image */}
+        <div className="w-50 h-100">
+          <img
+            src="/otp.jpeg"
+            alt="otp"
+            style={{ width: "100%", height: "100%" }}
+          />
+        </div>
 
-          {/* Right Side */}
-          <div className="col-md-6 d-flex flex-column justify-content-center align-items-center p-4 text-center">
-            <h1 className="text-primary fw-bold mb-2">Enter OTP Code</h1>
-
-            <div className="d-flex justify-content-center gap-2 mb-2">
+        {/* Right Form */}
+        <div className="w-50 d-flex flex-column justify-content-between p-4 bg-white">
+          <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
+            <h1 className="text-primary fw-bold mb-3">Enter OTP Code</h1>
+            <div className="d-flex justify-content-center gap-3 mb-3">
               {otp.map((digit, i) => (
                 <input
                   key={i}
                   maxLength={1}
                   className="form-control text-center"
-                  style={{ height: "70px", width: "60px" }}
+                  style={{ height: "70px", width: "60px", fontSize: "24px" }}
                   ref={(el) => (inputRefs.current[i] = el)}
                   value={digit}
                   onChange={(e) => handleChange(i, e.target.value)}
                 />
               ))}
             </div>
-
             <button
-              className="btn btn-info py-2 px-4 fs-5 mt-2"
+              className="btn btn-info px-5 py-2 fs-5"
               onClick={handleSubmit}
             >
               Next
             </button>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="mt-auto">
-          <Footer />
+          {/* Footer */}
+          <div className="text-center">
+            <Footer />
+          </div>
         </div>
       </div>
     </div>

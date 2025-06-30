@@ -1,6 +1,4 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import profilePic from "../assets/profile.jpg"; // put the profile image in src/assets
-import "./LeaveApproval.css"; // optional, for extra custom styles
 
 const LeaveApproval = () => {
     return (
@@ -80,7 +78,7 @@ const LeaveApproval = () => {
 
                 {/* Profile Image */}
                 <img
-                src={profilePic}
+                src="/profile.jpeg"
                 alt="profile"
                 className="rounded-circle"
                 style={{
