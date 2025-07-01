@@ -1,5 +1,6 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Footer from '../components/Footer';
+import Sidebar from '../components/Sidebar';
+import Topbar from '../components/Topbar';
 
 const notifications = [
     {
@@ -42,37 +43,25 @@ const notifications = [
         message: "The warning has been sent.",
         starred: false,
     },
-    ];
+];
 
-    const AdminNotifications = () => {
+    function AdminNotifications() {
     return (
-        <div className="container-fluid bg-light min-vh-100 d-flex flex-column p-0">
-        {/* Navbar */}
-        <nav className="navbar bg-white shadow-sm px-4 d-flex justify-content-between align-items-center">
-            <span className="navbar-brand fw-bold text-primary">
-            <img src="/logo.png" alt="VisionTrack" style={{ height: "30px" }} className="me-2" />
-            VisionTrack
-            </span>
-            <input className="form-control w-25" type="search" placeholder="Search..." />
-            <span className="text-muted">Mr. Thomson</span>
-        </nav>
+        <div className="d-flex flex-column" style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
+        {/* Topbar */}
+        <Topbar />
 
-        <div className="row flex-grow-1">
+        {/* Layout */}
+        <div className="d-flex" style={{ flexGrow: 1, overflow: 'hidden' }}>
             {/* Sidebar */}
-            <div className="col-1 bg-white border-end d-flex flex-column align-items-center py-3">
-            <i className="bi bi-house-door-fill my-3"></i>
-            <i className="bi bi-person-fill my-3"></i>
-            <i className="bi bi-calendar-event-fill my-3"></i>
-            <i className="bi bi-list-ul my-3"></i>
-            <i className="bi bi-box-arrow-right my-3"></i>
-            </div>
+            <Sidebar />
 
             {/* Main Content */}
-            <div className="col px-4 py-3">
-            <h2 className="fw-bold">Notifications</h2>
+            <div className="flex-grow-1 p-4" style={{ overflowY: 'auto', backgroundColor: '#dffdff' }}>
+            <h2 className="fw-bold mb-4">Notifications</h2>
 
-            {/* Search & Filter */}
-            <div className="d-flex align-items-center gap-3 mt-3">
+            {/* Search and Filter */}
+            <div className="d-flex align-items-center gap-3 mb-4">
                 <div className="input-group w-50">
                 <span className="input-group-text">
                     <i className="bi bi-search"></i>
@@ -90,7 +79,7 @@ const notifications = [
             </div>
 
             {/* Notification Cards */}
-            <div className="mt-4">
+            <div>
                 {notifications.map((note) => (
                 <div
                     key={note.id}
@@ -120,10 +109,12 @@ const notifications = [
                 </div>
                 ))}
             </div>
+
+            <Footer />
             </div>
         </div>
         </div>
     );
-};
+}
 
 export default AdminNotifications;

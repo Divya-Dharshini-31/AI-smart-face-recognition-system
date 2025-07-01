@@ -3,11 +3,11 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AddEditUser from './pages/AddEditUser';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminNotifications from './pages/AdminNotifications';
-import LeaveApproval from './pages/LeaveApproval';
 import AdminReportPage from './pages/AdminReportPage';
-import AdminTeacher from './pages/AdminTeacher';
 import AdminStudent from './pages/AdminStudent';
+import AdminTeacher from './pages/AdminTeacher';
 import AttendanceHistory from './pages/AttendanceHistory';
+import LeaveApproval from './pages/LeaveApproval';
 import LeaveRequests from './pages/LeaveRequests';
 import OTPVerification from './pages/OTPVerification';
 import ResetPassword from './pages/ResetPassword';
@@ -30,7 +30,7 @@ function App() {
         <Route path="/students" element={<AdminStudent />} />
         <Route path="/leave-requests" element={<LeaveRequests />} />
         <Route path="/leave-approval" element={<LeaveApproval />} />
-        <Route path="/admin-notif" element={<AdminNotifications />} />
+        <Route path="/notifications" element={<AdminNotifications />} />
       </Routes>
     </Router>
   );
