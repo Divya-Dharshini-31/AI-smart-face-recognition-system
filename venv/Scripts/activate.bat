@@ -8,11 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-<<<<<<< HEAD:backend/venv/Scripts/activate.bat
-set VIRTUAL_ENV=C:\Users\HP\Desktop\AI-smart-face-recognition-system\backend\venv
-=======
-set VIRTUAL_ENV=C:\Users\msvic\OneDrive\Desktop\AI-smart-face-recognition-system\venv
->>>>>>> 13c9fa6e327e114338645094a6c576efc33c6ffa:venv/Scripts/activate.bat
+set "VIRTUAL_ENV=C:\Users\admin\Desktop\AI-smart-face-recognition-system\venv"
 
 if not defined PROMPT set PROMPT=$P$G
 
@@ -28,11 +24,8 @@ set PYTHONHOME=
 if defined _OLD_VIRTUAL_PATH set PATH=%_OLD_VIRTUAL_PATH%
 if not defined _OLD_VIRTUAL_PATH set _OLD_VIRTUAL_PATH=%PATH%
 
-set PATH=%VIRTUAL_ENV%\Scripts;%PATH%
-<<<<<<< HEAD:backend/venv/Scripts/activate.bat
-set VIRTUAL_ENV_PROMPT=venv
-=======
->>>>>>> 13c9fa6e327e114338645094a6c576efc33c6ffa:venv/Scripts/activate.bat
+set "PATH=%VIRTUAL_ENV%\Scripts;%PATH%"
+set "VIRTUAL_ENV_PROMPT=venv"
 
 :END
 if defined _OLD_CODEPAGE (
