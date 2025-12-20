@@ -10,9 +10,37 @@ function ResetPassword() {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const navigate = useNavigate();
 
-  const handleReset = () => {
-    if (pass === confirm) navigate("/");
-    else alert("Passwords do not match!");
+  const handleReset = async () => {
+    const email = localStorage.getItem("resetEmail");
+    if (!email) {
+      alert("Email not found. Please try again.");
+      navigate("/signin");
+      return;
+    }
+
+    if (pass !== confirm) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8000/api/reset-password/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pass }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        alert("Password reset successful!");
+        localStorage.removeItem("resetEmail"); // Clear stored email
+        navigate("/signin"); // go to signin
+      } else {
+        alert(result.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    }
   };
 
   return (
@@ -29,7 +57,7 @@ function ResetPassword() {
           <img
             src="/reset.jpeg"
             alt="reset"
-            style={{ width: "100%", height: "100%"}}
+            style={{ width: "100%", height: "100%" }}
           />
         </div>
 
@@ -38,7 +66,10 @@ function ResetPassword() {
           <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
             <h3 className="text-primary fw-bold mb-4">Reset Password</h3>
 
-            <div className="input-group mb-3" style={{ maxWidth: "400px", width: "100%" }}>
+            <div
+              className="input-group mb-3"
+              style={{ maxWidth: "400px", width: "100%" }}
+            >
               <input
                 type={visible ? "text" : "password"}
                 className="form-control bg-info-subtle"
@@ -55,7 +86,10 @@ function ResetPassword() {
               </span>
             </div>
 
-            <div className="input-group mb-4" style={{ maxWidth: "400px", width: "100%" }}>
+            <div
+              className="input-group mb-4"
+              style={{ maxWidth: "400px", width: "100%" }}
+            >
               <input
                 type={confirmVisible ? "text" : "password"}
                 className="form-control bg-info-subtle"

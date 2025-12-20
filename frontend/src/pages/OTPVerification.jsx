@@ -15,11 +15,30 @@ function OTPVerification() {
     if (value && index < 3) inputRefs.current[index + 1].focus();
   };
 
-  const handleSubmit = () => {
-    if (otp.join("") === "7777") {
-      navigate("/reset-password");
-    } else {
-      alert("Invalid OTP");
+  const handleSubmit = async () => {
+    const email = localStorage.getItem("resetEmail");
+    if (!email) {
+      alert("Email not found. Please try again.");
+      navigate("/signin");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8000/api/verify-otp/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: otp.join("") }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        alert("OTP verified successfully!");
+        navigate("/reset-password");
+      } else {
+        alert(result.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
     }
   };
 
