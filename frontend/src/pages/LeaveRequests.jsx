@@ -1,85 +1,93 @@
-// src/pages/LeaveRequests.jsx
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 
-const leaveRows = [
-    { name: 'Ms. Dowan', from: '27.05.2025', to: '31.05.2025', reason: 'Medical Leave' },
-    { name: 'Mr. Jonathan', from: '28.05.2025', to: '28.05.2025', reason: 'General/Personal Leave' },
-    { name: 'Mr. David', from: '30.05.2025', to: '31.05.2025', reason: 'Medical Leave' },
-    { name: 'Ms. Emma', from: '30.05.2025', to: '02.06.2025', reason: 'Training/Seminar' },
-];
-
 export default function LeaveRequests() {
-    return (
-        <div className="d-flex flex-column" style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
-        {/* Topbar */}
-        <Topbar />
+  const [leaves, setLeaves] = useState([]);
+  const navigate = useNavigate();
 
-        {/* Layout with Sidebar */}
-        <div className="d-flex" style={{ flexGrow: 1, overflow: 'hidden' }}>
-            {/* Sidebar */}
-            <Sidebar active="leave" />
+  const token = localStorage.getItem('accessToken'); // JWT token
 
-            {/* Main Content */}
-            <div className="flex-grow-1 p-4" style={{ overflowY: 'auto', backgroundColor: '#eafcff' }}>
-            {/* Heading */}
-            <div className="text-center mb-4">
-                <h2 className="fw-bold">List of Leave Requests</h2>
-            </div>
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/admin/leaves/', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => setLeaves(res.data))
+    .catch(err => console.error(err));
+  }, []);
 
-            {/* Table */}
-            <div className="table-responsive mb-5">
-                <table className="table table-bordered text-center align-middle bg-white">
-                <thead className="table-light">
-                    <tr>
-                    <th>Name</th>
-                    <th>From date</th>
-                    <th>To date</th>
-                    <th>Reason</th>
-                    <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {leaveRows.map((row, idx) => (
-                    <tr key={idx}>
-                        <td>{row.name}</td>
-                        <td>{row.from}</td>
-                        <td>{row.to}</td>
-                        <td>{row.reason}</td>
-                        <td>
-                        <button className="btn btn-info text-white rounded-pill px-4 py-1">
-                            View
-                        </button>
-                        </td>
-                    </tr>
-                    ))}
-                </tbody>
-                </table>
-            </div>
+  const approved = leaves.filter(l => l.status === 'APPROVED').length;
+  const rejected = leaves.filter(l => l.status === 'REJECTED').length;
 
-            {/* Summary Card */}
-            <div className="d-flex justify-content-center">
-                <div className="p-4 rounded-3" style={{ backgroundColor: '#d7eef5', minWidth: '250px' }}>
-                <p className="mb-1 fw-semibold">
-                    No. of requests <span className="float-end">{leaveRows.length}</span>
-                </p>
-                <p className="mb-1 fw-semibold">
-                    Approved <span className="float-end">3</span>
-                </p>
-                <p className="mb-0 fw-semibold">
-                    Rejected <span className="float-end">1</span>
-                </p>
-                </div>
-            </div>
+  return (
+    <div className="d-flex flex-column" style={{ width: '100vw', height: '100vh' }}>
+      <Topbar />
 
-            {/* Footer */}
-            <div className="mt-4">
-                <Footer />
+      <div className="d-flex flex-grow-1">
+        <Sidebar active="leave" />
+
+        <div className="flex-grow-1 p-4" style={{ backgroundColor: '#eafcff' }}>
+          <h2 className="text-center fw-bold mb-4">List of Leave Requests</h2>
+
+          <div className="table-responsive">
+            <table className="table table-bordered text-center bg-white">
+              <thead className="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {leaves.map(leave => (
+                  <tr key={leave.id}>
+                    <td>{leave.name}</td>
+                    <td>{leave.from_date}</td>
+                    <td>{leave.to_date}</td>
+                    <td>{leave.leave_type}</td>
+                    <td>
+                      <span className={`badge 
+                        ${leave.status === 'PENDING' ? 'bg-warning' :
+                          leave.status === 'APPROVED' ? 'bg-success' : 'bg-danger'}`}>
+                        {leave.status}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-info text-white rounded-pill px-3"
+                        onClick={() => navigate(`/leave-approval/${leave.id}`)}
+                      >
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Summary */}
+          <div className="d-flex justify-content-center mt-4">
+            <div className="p-4 rounded-3 bg-light">
+              <p>Total Requests: {leaves.length}</p>
+              <p>Approved: {approved}</p>
+              <p>Rejected: {rejected}</p>
             </div>
-            </div>
+          </div>
+
+          <Footer />
         </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 }

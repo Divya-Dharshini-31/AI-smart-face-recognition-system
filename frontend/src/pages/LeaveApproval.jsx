@@ -1,88 +1,88 @@
-// src/pages/LeaveApproval.jsx
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
-import './LeaveApproval.css'; //  ⬅️  new CSS (see below)
 
 function LeaveApproval() {
-    return (
-        <div className="d-flex flex-column" style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
-        {/* ---------- Topbar ---------- */}
-        <Topbar />
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [leave, setLeave] = useState(null);
 
-        {/* ---------- Body layout ---------- */}
-        <div className="d-flex" style={{ flexGrow: 1, overflow: 'hidden' }}>
-            {/* Sidebar */}
-            <Sidebar />
+  const token = localStorage.getItem('accessToken');
 
-            {/* Main content */}
-            <div className="flex-grow-1 p-3" style={{ overflowY: 'auto', backgroundColor: '#dffdff' }}>
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100%' }}>
-                {/* Outer blue card */}
-                <div className="p-4 rounded-4 shadow-sm position-relative" style={{ backgroundColor: '#6ba9cc', width: 700 }}>
-                {/* Inner light card */}
-                <div className="bg-opacity-25 bg-white rounded-4 p-4">
-                    {/* Name */}
-                    <div className="mb-3 d-flex align-items-center gap-3">
-                    <strong style={{ width: 100 }}>Name:</strong>
-                    <input className="form-control form-control-sm custom-input" value="Ms. Emma Kwan" disabled />
-                    </div>
+  useEffect(() => {
+    axios.get(`http://localhost:8000/api/admin/leaves/${id}/`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => setLeave(res.data))
+    .catch(err => console.error(err));
+  }, [id]);
 
-                    {/* From Date */}
-                    <div className="mb-3 d-flex align-items-center gap-3">
-                    <strong style={{ width: 100 }}>From&nbsp;Date:</strong>
-                    <input className="form-control form-control-sm custom-input" value="30/05/2025" disabled />
-                    </div>
+  const updateStatus = (status) => {
+    axios.put(
+      `http://localhost:8000/api/admin/leaves/${id}/status/`,
+      { status },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .then(() => navigate('/leave-requests'))
+    .catch(err => console.error(err));
+  };
 
-                    {/* To Date */}
-                    <div className="mb-3 d-flex align-items-center gap-3">
-                    <strong style={{ width: 100 }}>To&nbsp;Date:</strong>
-                    <input className="form-control form-control-sm custom-input" value="02/06/2025" disabled />
-                    </div>
+  if (!leave) return <p className="text-center mt-5">Loading...</p>;
 
-                    {/* Reason */}
-                    <div className="mb-3 d-flex align-items-center gap-3">
-                    <strong style={{ width: 100 }}>Reason:</strong>
-                    <input className="form-control form-control-sm custom-input" value="Training/Seminar" disabled />
-                    </div>
+  return (
+    <div className="d-flex flex-column" style={{ height: '100vh' }}>
+      <Topbar />
 
-                    {/* View document – centred */}
-                    <div className="d-flex justify-content-center mt-4">
-                    <button className="btn btn-light border d-flex align-items-center">
-                        View uploaded document <i className="bi bi-upload ms-2"></i>
-                    </button>
-                    </div>
+      <div className="d-flex flex-grow-1">
+        <Sidebar />
+
+        <div className="flex-grow-1 p-4" style={{ backgroundColor: '#dffdff' }}>
+          <div className="d-flex justify-content-center">
+            <div className="p-4 rounded shadow bg-white" style={{ width: 700 }}>
+              <p><b>Name:</b> {leave.name}</p>
+              <p><b>From:</b> {leave.from_date}</p>
+              <p><b>To:</b> {leave.to_date}</p>
+              <p><b>Reason:</b> {leave.leave_type}</p>
+
+              {leave.document && (
+                <div className="text-center mt-3">
+                  <a
+                    href={`http://localhost:8000${leave.document}`}
+                    target="_blank"
+                    className="btn btn-outline-primary"
+                  >
+                    View Uploaded Document
+                  </a>
                 </div>
-
-                {/* Profile image */}
-                <img
-                    src="/profile.jpeg"
-                    alt="profile"
-                    className="rounded-circle position-absolute"
-                    style={{
-                    width: 120,
-                    height: 120,
-                    objectFit: 'cover',
-                    top: 20,
-                    right: 20,
-                    border: '5px solid white'
-                    }}
-                />
-                </div>
+              )}
             </div>
+          </div>
 
-            {/* Approve / Reject buttons */}
-            <div className="d-flex justify-content-center gap-4 py-4">
-                <button className="btn btn-success px-4 py-2 fw-bold rounded-pill">Approve</button>
-                <button className="btn btn-danger  px-4 py-2 fw-bold rounded-pill">Reject</button>
-            </div>
+          <div className="d-flex justify-content-center gap-4 mt-4">
+            <button
+              className="btn btn-success px-4"
+              onClick={() => updateStatus('APPROVED')}
+            >
+              Approve
+            </button>
 
-            {/* Footer */}
-            <Footer />
-            </div>
+            <button
+              className="btn btn-danger px-4"
+              onClick={() => updateStatus('REJECTED')}
+            >
+              Reject
+            </button>
+          </div>
+
+          <Footer />
         </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default LeaveApproval;
