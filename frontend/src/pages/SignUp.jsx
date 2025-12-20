@@ -5,8 +5,62 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function SignUp() {
   const navigate = useNavigate();
+
+  // Input state hooks
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [role, setRole] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Password visibility
   const [visible, setVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
+
+  // Loader state
+  const [loading, setLoading] = useState(false);
+
+  // Handle signup
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const data = {
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      role,
+      mobile,
+      password,
+    };
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:8000/api/signup/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        alert("Signup successful");
+        navigate("/signin"); // redirect to signin page
+      } else {
+        alert(JSON.stringify(result.message));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -36,6 +90,8 @@ function SignUp() {
                   type="email"
                   className="form-control mb-3 bg-info-subtle"
                   placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
                 <div className="d-flex gap-2 mb-3">
@@ -43,16 +99,25 @@ function SignUp() {
                     type="text"
                     placeholder="First name"
                     className="form-control bg-info-subtle"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     required
                   />
                   <input
                     type="text"
                     placeholder="Last name"
                     className="form-control bg-info-subtle"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     required
                   />
                 </div>
-                <select className="form-control mb-3 bg-info-subtle" required>
+                <select
+                  className="form-control mb-3 bg-info-subtle"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required
+                >
                   <option value="">Select Role</option>
                   <option>Admin</option>
                   <option>Teacher</option>
@@ -62,6 +127,8 @@ function SignUp() {
                   type="tel"
                   className="form-control mb-3 bg-info-subtle"
                   placeholder="Mobile number"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
                   required
                 />
                 <div className="input-group mb-3">
@@ -69,6 +136,8 @@ function SignUp() {
                     type={visible ? "text" : "password"}
                     className="form-control bg-info-subtle"
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                   <span
@@ -84,6 +153,8 @@ function SignUp() {
                     type={confirmVisible ? "text" : "password"}
                     className="form-control bg-info-subtle"
                     placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                   />
                   <span
@@ -97,16 +168,17 @@ function SignUp() {
                 <button
                   type="button"
                   className="btn btn-info w-100 mb-2"
-                  onClick={() => navigate("/dashboard")}
+                  onClick={handleSignUp}
+                  disabled={loading}
                 >
-                  Next
+                  {loading ? "Signing up..." : "Next"}
                 </button>
                 <p className="text-center">
                   Already have an account?{" "}
                   <span
                     className="text-primary"
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/signin")}
                   >
                     Sign in
                   </span>
