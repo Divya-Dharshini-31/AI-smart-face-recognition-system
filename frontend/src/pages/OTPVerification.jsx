@@ -1,44 +1,57 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
 import Footer from "../components/Footer";
 
 function OTPVerification() {
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const email = location.state?.email || localStorage.getItem("reset_email");
+
+  useEffect(() => {
+    if (location.state?.email) {
+      localStorage.setItem("reset_email", location.state.email);
+    }
+  }, [location.state]);
+
+  if (!email) {
+    navigate("/forgot-email");
+    return null;
+  }
+
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (index, value) => {
-    if (isNaN(value)) return;
+  const handleChange = (i, val) => {
+    if (isNaN(val)) return;
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[i] = val;
     setOtp(newOtp);
-    if (value && index < 3) inputRefs.current[index + 1].focus();
+    if (val && i < 3) inputRefs.current[i + 1].focus();
   };
 
-  const handleSubmit = async () => {
-    const email = localStorage.getItem("resetEmail");
-    if (!email) {
-      alert("Email not found. Please try again.");
-      navigate("/signin");
+  const verifyOtp = async () => {
+    const code = otp.join("");
+    if (code.length !== 4) {
+      alert("Enter 4-digit OTP");
       return;
     }
 
-    try {
-      const res = await fetch("http://localhost:8000/api/verify-otp/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code: otp.join("") }),
-      });
-      const result = await res.json();
-      if (result.success) {
-        alert("OTP verified successfully!");
-        navigate("/reset-password");
-      } else {
-        alert(result.message);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Server error");
+    setLoading(true);
+    const res = await fetch("http://localhost:8000/api/verify-otp/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, code }),
+    });
+
+    const data = await res.json();
+    setLoading(false);
+
+    if (data.success) {
+      navigate("/reset-password", { state: { email } });
+    } else {
+      alert(data.message);
     }
   };
 
@@ -49,43 +62,53 @@ function OTPVerification() {
     >
       <div
         className="d-flex shadow rounded overflow-hidden"
-        style={{ width: "80%", maxWidth: "1000px", height: "85%" }}
+        style={{ width: "80%", maxWidth: "1000px", height: "80%" }}
       >
-        {/* Left Image */}
+        {/* Left Logo */}
         <div className="w-50 h-100">
           <img
-            src="/otp.jpeg"
-            alt="otp"
-            style={{ width: "100%", height: "100%" }}
+            src="/logo.jpeg"
+            alt="VisionTrack"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </div>
 
-        {/* Right Form */}
+        {/* Right Content */}
         <div className="w-50 d-flex flex-column justify-content-between p-4 bg-white">
-          <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
-            <h1 className="text-primary fw-bold mb-3">Enter OTP Code</h1>
-            <div className="d-flex justify-content-center gap-3 mb-3">
-              {otp.map((digit, i) => (
-                <input
-                  key={i}
-                  maxLength={1}
-                  className="form-control text-center"
-                  style={{ height: "70px", width: "60px", fontSize: "24px" }}
-                  ref={(el) => (inputRefs.current[i] = el)}
-                  value={digit}
-                  onChange={(e) => handleChange(i, e.target.value)}
-                />
-              ))}
+          <div className="flex-grow-1 d-flex flex-column justify-content-center">
+            <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+              <h3 className="text-primary fw-bold mb-3 text-center">
+                OTP Verification
+              </h3>
+
+              <p className="text-center text-muted mb-4">
+                Enter the OTP sent to <strong>{email}</strong>
+              </p>
+
+              <div className="d-flex gap-2 justify-content-center mb-4">
+                {otp.map((d, i) => (
+                  <input
+                    key={i}
+                    maxLength={1}
+                    ref={(el) => (inputRefs.current[i] = el)}
+                    value={d}
+                    onChange={(e) => handleChange(i, e.target.value)}
+                    className="form-control text-center bg-info-subtle"
+                    style={{ width: "50px", height: "50px" }}
+                  />
+                ))}
+              </div>
+
+              <button
+                className="btn btn-info w-100"
+                onClick={verifyOtp}
+                disabled={loading}
+              >
+                {loading ? "Verifying..." : "Verify OTP"}
+              </button>
             </div>
-            <button
-              className="btn btn-info px-5 py-2 fs-5"
-              onClick={handleSubmit}
-            >
-              Next
-            </button>
           </div>
 
-          {/* Footer */}
           <div className="text-center">
             <Footer />
           </div>

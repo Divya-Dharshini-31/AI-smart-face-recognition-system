@@ -12,8 +12,7 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const handleForgot = () => {
-    if (!email.trim()) alert("Please enter email to continue");
-    else navigate("/otp");
+  navigate("/forgot-email");
   };
 
   const handleSignIn = async () => {

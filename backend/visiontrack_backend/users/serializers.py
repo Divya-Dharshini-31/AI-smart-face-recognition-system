@@ -14,11 +14,14 @@ class SignInSerializer(serializers.Serializer):
     password = serializers.CharField()
     role = serializers.CharField()
 
-class OTPSerializer(serializers.Serializer):
+class ForgotEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class OTPVerifySerializer(serializers.Serializer):
     email = serializers.EmailField()
     code = serializers.CharField(max_length=4)
 
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField()
+    password = serializers.CharField(min_length=6)
 
