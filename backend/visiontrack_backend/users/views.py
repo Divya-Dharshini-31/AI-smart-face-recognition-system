@@ -16,8 +16,7 @@ import jwt
 from django.conf import settings
 import random
 from datetime import datetime,timedelta
-
-
+from .email_utils import send_otp_email
 
 class SignUpView(APIView):
     def post(self, request):
@@ -118,8 +117,8 @@ class SendOTPView(APIView):
             code=otp_code
         ).save()
 
-        # DEV ONLY
-        print(f"🔐 OTP for {email}: {otp_code}")
+        print(f"🔐 OTP for {email}: {otp_code}")  # console
+        send_otp_email(email, otp_code)  
 
         return Response(
             {"success": True, "message": "OTP sent successfully"},
