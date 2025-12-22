@@ -81,13 +81,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-from mongoengine import connect
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-connect(
-    db="VisionTrack",  # your database name
-    host="mongodb+srv://VisionAdmin:vision-23-ADMIN@visiontrack.jh77ask.mongodb.net/VisionTrack",
-    username="VisionAdmin",
-    password="vision-23-ADMIN",
-    alias="default"
-)
+EMAIL_HOST_USER = 'janani05pancha@gmail.com'
+EMAIL_HOST_PASSWORD = 'haelyxfgilfdsjib'
+
+DEFAULT_FROM_EMAIL = 'VisionTrack <janani05pancha@gmail.com>'
