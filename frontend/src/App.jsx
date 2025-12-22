@@ -13,6 +13,7 @@ import OTPVerification from './pages/OTPVerification';
 import ResetPassword from './pages/ResetPassword';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import ForgotEmail from './pages/ForgotEmail';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} /> 
-        <Route path="/otp" element={<OTPVerification />} />
+        <Route path="/forgot-email" element={<ForgotEmail />} />
+        <Route path="/otp-verification" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/add-edit-user" element={<AddEditUser />} />
         <Route path="/admin-report" element={<AdminReportPage />} />
