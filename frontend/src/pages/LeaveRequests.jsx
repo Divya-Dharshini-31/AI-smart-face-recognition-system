@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
@@ -10,16 +9,12 @@ export default function LeaveRequests() {
   const [leaves, setLeaves] = useState([]);
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('accessToken'); // JWT token
-
+  // Fetch all leaves from backend
   useEffect(() => {
-    axios.get('http://localhost:8000/api/admin/leaves/', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(res => setLeaves(res.data))
-    .catch(err => console.error(err));
+    fetch('http://127.0.0.1:8000/api/admin/leaves/')
+      .then(res => res.json())
+      .then(data => setLeaves(data))
+      .catch(err => console.error("Failed to load leave requests", err));
   }, []);
 
   const approved = leaves.filter(l => l.status === 'APPROVED').length;
@@ -76,7 +71,6 @@ export default function LeaveRequests() {
             </table>
           </div>
 
-          {/* Summary */}
           <div className="d-flex justify-content-center mt-4">
             <div className="p-4 rounded-3 bg-light">
               <p>Total Requests: {leaves.length}</p>

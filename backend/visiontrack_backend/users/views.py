@@ -8,7 +8,8 @@ from django.contrib.auth.hashers import make_password
 
 from .models import User
 from .serializers import UserSerializer
-from .db import connect  # ensures MongoDB connects
+from common.mongo import connect
+
 
 class SignUpView(APIView):
     def post(self, request):

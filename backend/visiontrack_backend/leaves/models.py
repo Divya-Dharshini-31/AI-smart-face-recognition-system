@@ -1,36 +1,37 @@
-from djongo import models
-
-LEAVE_STATUS = (
-    ('PENDING', 'Pending'),
-    ('APPROVED', 'Approved'),
-    ('REJECTED', 'Rejected'),
+from mongoengine import (
+    Document,
+    StringField,
+    DateField,
+    DateTimeField,
+    FileField
 )
+from datetime import datetime
 
-LEAVE_TYPES = (
-    ('MEDICAL', 'Medical'),
-    ('PERSONAL', 'Personal'),
-    ('TRAINING', 'Training/Seminar'),
-)
 
-class LeaveRequest(models.Model):
-    user_id = models.CharField(max_length=100)   # student / teacher ID
-    name = models.CharField(max_length=100)
-    role = models.CharField(max_length=20)       # student / teacher
+class LeaveRequest(Document):
+    user_id = StringField(required=True)     # student / teacher id
+    name = StringField(required=True)
+    role = StringField(required=True)        # student / teacher
 
-    leave_type = models.CharField(max_length=20, choices=LEAVE_TYPES)
-    from_date = models.DateField()
-    to_date = models.DateField()
-    reason = models.TextField()
+    leave_type = StringField(
+        choices=['MEDICAL', 'PERSONAL', 'TRAINING'],
+        required=True
+    )
 
-    document = models.FileField(upload_to='leave_docs/', null=True, blank=True)
+    from_date = DateField(required=True)
+    to_date = DateField(required=True)
+    reason = StringField()
 
-    status = models.CharField(
-        max_length=20,
-        choices=LEAVE_STATUS,
+    document = FileField(required=False)
+
+    status = StringField(
+        choices=['PENDING', 'APPROVED', 'REJECTED'],
         default='PENDING'
     )
 
-    applied_at = models.DateTimeField(auto_now_add=True)
+    applied_at = DateTimeField(default=datetime.utcnow)
 
-    def __str__(self):
-        return f"{self.name} - {self.leave_type}"
+    meta = {
+        "collection": "leave_requests",
+        "ordering": ["-applied_at"]
+    }

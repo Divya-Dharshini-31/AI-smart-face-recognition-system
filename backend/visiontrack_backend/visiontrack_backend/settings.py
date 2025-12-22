@@ -4,7 +4,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-dev-key'
 DEBUG = True
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+# ✅ MongoDB connection (MongoEngine)
+from common.mongo import *
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -14,10 +18,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third-party
     'rest_framework',
     'corsheaders',
 
+    # local apps
     'users',
+    'leaves',
 ]
 
 DATABASES = {
@@ -61,12 +68,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'visiontrack_backend.wsgi.application'
 
-# ❌ No DATABASES (MongoEngine does NOT use Django ORM)
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# ✅ Media (for leave documents)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+from mongoengine import connect
+
+connect(
+    db="VisionTrack",  # your database name
+    host="mongodb+srv://VisionAdmin:vision-23-ADMIN@visiontrack.jh77ask.mongodb.net/VisionTrack",
+    username="VisionAdmin",
+    password="vision-23-ADMIN",
+    alias="default"
+)

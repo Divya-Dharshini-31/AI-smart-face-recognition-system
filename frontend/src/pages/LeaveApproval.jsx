@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
@@ -11,22 +10,21 @@ function LeaveApproval() {
   const navigate = useNavigate();
   const [leave, setLeave] = useState(null);
 
-  const token = localStorage.getItem('accessToken');
-
+  // Fetch single leave
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/admin/leaves/${id}/`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(res => setLeave(res.data))
-    .catch(err => console.error(err));
+    fetch(`http://127.0.0.1:8000/api/admin/leaves/${id}/`)
+      .then(res => res.json())
+      .then(data => setLeave(data))
+      .catch(err => console.error("Failed to load leave details", err));
   }, [id]);
 
+  // Update leave status
   const updateStatus = (status) => {
-    axios.put(
-      `http://localhost:8000/api/admin/leaves/${id}/status/`,
-      { status },
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
+    fetch(`http://127.0.0.1:8000/api/admin/leaves/${id}/status/`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    })
     .then(() => navigate('/leave-requests'))
     .catch(err => console.error(err));
   };
@@ -51,8 +49,9 @@ function LeaveApproval() {
               {leave.document && (
                 <div className="text-center mt-3">
                   <a
-                    href={`http://localhost:8000${leave.document}`}
+                    href={`http://127.0.0.1:8000${leave.document}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="btn btn-outline-primary"
                   >
                     View Uploaded Document
