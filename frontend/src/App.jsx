@@ -13,20 +13,19 @@ import OTPVerification from './pages/OTPVerification';
 import ResetPassword from './pages/ResetPassword';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import Settings from './pages/Settings';
-
+import ForgotEmail from './pages/ForgotEmail';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AdminDashboard />} />
-        {/*<Route path="/" element={<SignIn />} />*/}
+        <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/otp" element={<OTPVerification />} />
+        <Route path="/signin" element={<SignIn />} /> 
+        <Route path="/forgot-email" element={<ForgotEmail />} />
+        <Route path="/otp-verification" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/add-edit-user" element={<AddEditUser />} />
-        <Route path="/settings" element={<Settings />} />
         <Route path="/admin-report" element={<AdminReportPage />} />
         <Route path="/attendance-history" element={<AttendanceHistory />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
