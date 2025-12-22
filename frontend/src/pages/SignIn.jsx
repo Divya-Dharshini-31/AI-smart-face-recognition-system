@@ -12,7 +12,7 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const handleForgot = () => {
-  navigate("/forgot-email");
+    navigate("/forgot-email");
   };
 
   const handleSignIn = async () => {
@@ -33,11 +33,15 @@ function SignIn() {
       const result = await res.json();
 
       if (result.success) {
-        // Save JWT tokens in localStorage
+        // ✅ Store tokens
         localStorage.setItem("access_token", result.access);
         localStorage.setItem("refresh_token", result.refresh);
+
+        // ✅ Store user details (IMPORTANT)
+        localStorage.setItem("user", JSON.stringify(result.user));
+
         alert("Login successful!");
-        navigate("/dashboard"); // redirect to dashboard
+        navigate("/dashboard");
       } else {
         alert(result.message || "Invalid credentials");
       }
@@ -58,7 +62,7 @@ function SignIn() {
         className="d-flex shadow rounded overflow-hidden"
         style={{ width: "80%", maxWidth: "1000px", height: "80%" }}
       >
-        {/* Left Side - Image */}
+        {/* Left Side */}
         <div className="w-50 h-100">
           <img
             src="/logo.jpeg"
@@ -67,11 +71,14 @@ function SignIn() {
           />
         </div>
 
-        {/* Right Side - Form + Footer */}
+        {/* Right Side */}
         <div className="w-50 d-flex flex-column justify-content-between p-4 bg-white">
           <div className="flex-grow-1 d-flex flex-column justify-content-center">
             <div style={{ width: "100%", maxWidth: "400px", margin: "0 auto" }}>
-              <h3 className="text-primary fw-bold mb-3 text-center">Sign in</h3>
+              <h3 className="text-primary fw-bold mb-3 text-center">
+                Sign in
+              </h3>
+
               <form>
                 <input
                   type="email"
@@ -79,8 +86,8 @@ function SignIn() {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
+
                 <div className="input-group mb-3">
                   <input
                     type={passwordVisible ? "text" : "password"}
@@ -88,7 +95,6 @@ function SignIn() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                   />
                   <span
                     className="input-group-text"
@@ -98,17 +104,18 @@ function SignIn() {
                     {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                   </span>
                 </div>
+
                 <select
                   className="form-control mb-3 bg-info-subtle"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  required
                 >
                   <option value="">Select Role</option>
                   <option>Admin</option>
                   <option>Teacher</option>
                   <option>Student</option>
                 </select>
+
                 <div className="text-end mb-3">
                   <span
                     className="text-primary"
@@ -118,6 +125,7 @@ function SignIn() {
                     Forgot Your Password?
                   </span>
                 </div>
+
                 <button
                   type="button"
                   className="btn btn-info w-100 mb-2"
@@ -126,6 +134,7 @@ function SignIn() {
                 >
                   {loading ? "Signing in..." : "Sign In"}
                 </button>
+
                 <p className="text-center">
                   Don’t have an account?{" "}
                   <span
@@ -140,7 +149,6 @@ function SignIn() {
             </div>
           </div>
 
-          {/* Footer at bottom */}
           <div className="text-center">
             <Footer />
           </div>

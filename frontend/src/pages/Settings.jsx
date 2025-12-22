@@ -4,57 +4,81 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 
 function Settings() {
-  const defaultProfile = {
-    name: "Mr. Thomson",
-    email: "admin@visiontrack.com",
-    role: "Admin",
-    phone: "9876543210",
-    department: "Administration",
-  };
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    role: "",
+    phone: "",
+  });
 
-  const [profile, setProfile] = useState(defaultProfile);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Load from localStorage on page load
+  // Load user data from localStorage
   useEffect(() => {
-    const savedProfile = localStorage.getItem("userProfile");
-    if (savedProfile) {
-      setProfile(JSON.parse(savedProfile));
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setProfile({
+        name: `${user.first_name || ""} ${user.last_name || ""}`.trim(),
+        email: user.email || "",
+        role: user.role || "",
+        phone: user.phone || "",
+      });
     }
   }, []);
 
-  // Save to localStorage
+  // Save updated profile
   const handleSave = () => {
-    localStorage.setItem("userProfile", JSON.stringify(profile));
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    const updatedUser = {
+      ...storedUser,
+      first_name: profile.name.split(" ")[0] || "",
+      last_name: profile.name.split(" ").slice(1).join(" ") || "",
+      phone: profile.phone,
+    };
+
+    localStorage.setItem("user", JSON.stringify(updatedUser));
     setIsEditing(false);
   };
 
   return (
-    <div className="d-flex flex-column" style={{ width: "100vw", height: "100vh" }}>
+    <div
+      className="d-flex flex-column"
+      style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
+    >
+      {/* Topbar */}
       <Topbar />
 
-      <div className="d-flex flex-grow-1">
+      {/* Layout */}
+      <div className="d-flex flex-grow-1" style={{ overflow: "hidden" }}>
         <Sidebar />
 
-        <div className="flex-grow-1 p-4" style={{ backgroundColor: "#dffdff" }}>
+        {/* Main Content */}
+        <div
+          className="flex-grow-1 p-4"
+          style={{ backgroundColor: "#dffdff", overflowY: "auto" }}
+        >
           <h4 className="fw-bold mb-4">Settings</h4>
 
           <div className="row">
-            {/* Left menu */}
-            <div className="col-md-3">
-              <div className="list-group">
+            {/* Left Menu */}
+            <div className="col-lg-3 col-md-4">
+              <div className="list-group shadow-sm rounded">
                 <button className="list-group-item list-group-item-action active">
                   Profile
                 </button>
               </div>
             </div>
 
-            {/* Right content */}
-            <div className="col-md-9">
-              <div className="bg-white p-4 rounded shadow-sm">
-                <h5 className="fw-semibold mb-4">Profile Information</h5>
+            {/* Profile Content */}
+            <div className="col-lg-6 col-md-8 ms-lg-2">
+              <div className="bg-white p-4 rounded-4 shadow-sm">
+                <h5 className="fw-semibold mb-4">
+                  Profile Information
+                </h5>
 
-                {/* Name */}
+                {/* Full Name */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Full Name</label>
                   <input
@@ -68,7 +92,7 @@ function Settings() {
                   />
                 </div>
 
-                {/* Email (read-only) */}
+                {/* Email */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Email</label>
                   <input
@@ -79,7 +103,7 @@ function Settings() {
                   />
                 </div>
 
-                {/* Role (read-only) */}
+                {/* Role */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Role</label>
                   <input
@@ -91,7 +115,7 @@ function Settings() {
                 </div>
 
                 {/* Phone */}
-                <div className="mb-3">
+                <div className="mb-4">
                   <label className="form-label fw-semibold">Phone</label>
                   <input
                     type="text"
@@ -104,21 +128,7 @@ function Settings() {
                   />
                 </div>
 
-                {/* Department */}
-                <div className="mb-4">
-                  <label className="form-label fw-semibold">Department</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={profile.department}
-                    disabled={!isEditing}
-                    onChange={(e) =>
-                      setProfile({ ...profile, department: e.target.value })
-                    }
-                  />
-                </div>
-
-                {/* Action Buttons */}
+                {/* Actions */}
                 {!isEditing ? (
                   <button
                     className="btn btn-info px-4"
