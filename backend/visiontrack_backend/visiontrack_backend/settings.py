@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'users',
+    'notifications',
 ]
 
 DATABASES = {
