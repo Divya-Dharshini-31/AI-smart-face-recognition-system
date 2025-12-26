@@ -1,50 +1,60 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebarsmall";
+import Sidebarsmall from "../components/Sidebarsmall";
 import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/CalendarStyles.css";
-import Sidebarsmall from "../components/Sidebarsmall";
 
 function AttendanceHistory() {
   const [date, setDate] = useState(new Date());
+  const [attendance, setAttendance] = useState([]);
+  const [attendanceMap, setAttendanceMap] = useState({});
   const [percentage, setPercentage] = useState(0);
+  const [error, setError] = useState(null);
 
-  const attendanceMap = {
-    "2024-05-23": "present",
-    "2024-05-22": "absent",
-    "2024-05-21": "late",
-  };
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
 
   useEffect(() => {
-    const total = Object.keys(attendanceMap).length;
-    const presentDays = Object.values(attendanceMap).filter(
-      (v) => v === "present" || v === "late"
-    ).length;
-    setPercentage(Math.round((presentDays / total) * 100));
-  }, []);
+    fetch(`http://127.0.0.1:8000/api/my-attendance/?month=${month}&year=${year}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAttendance(data.attendance || []);
+        setPercentage(data.percentage || 0);
+
+        const map = {};
+        (data.attendance || []).forEach((item) => {
+          map[item.date] = item.status;
+        });
+        setAttendanceMap(map);
+      })
+      .catch(() => {
+        setError("Unable to load attendance");
+      });
+  }, [month, year]);
 
   return (
-    <div className="d-flex flex-column" style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+    <div className="d-flex flex-column" style={{ height: "100vh" }}>
       <Topbar />
 
-      <div className="d-flex" style={{ flexGrow: 1, overflow: "hidden" }}>
-        <Sidebarsmall iconOffset="-20px" />
+      <div className="d-flex flex-grow-1">
+        <Sidebarsmall />
 
-        <div className="flex-grow-1 d-flex flex-column p-3 overflow-auto" style={{ backgroundColor: "#e6f8fb" }}>
+        <div className="flex-grow-1 p-3" style={{ background: "#e6f8fb" }}>
+          {error && <div className="alert alert-danger">{error}</div>}
+
           <div className="row">
+            {/* Calendar */}
             <div className="col-md-3">
-              <div className="bg-white p-3 rounded shadow" style={{ transform: "scale(0.85)", transformOrigin: "top left" }}>
+              <div className="bg-white p-3 rounded shadow">
                 <h6 className="text-center">Attendance</h6>
-                <div className="text-center fw-bold mb-2">{date.toLocaleString('default', { month: 'long', year: 'numeric' })}</div>
                 <Calendar
                   onChange={setDate}
                   value={date}
                   tileClassName={({ date, view }) => {
-                    if (view === 'month') {
-                      const key = date.toISOString().split('T')[0];
+                    if (view === "month") {
+                      const key = date.toISOString().split("T")[0];
                       if (attendanceMap[key] === "present") return "present-day";
                       if (attendanceMap[key] === "absent") return "absent-day";
                       if (attendanceMap[key] === "late") return "late-day";
@@ -55,71 +65,49 @@ function AttendanceHistory() {
               </div>
             </div>
 
+            {/* Table */}
             <div className="col-md-9">
-              <div className="rounded shadow p-3" style={{ backgroundColor: "#e6f8fb" }}>
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h4 className="fw-bold mb-0">My Attendance History</h4>
-                  <div className="badge rounded-circle bg-success text-white p-3">{percentage}%</div>
-                </div>
-
-                <div className="d-flex align-items-center gap-3 mb-3">
-                  <div className="d-flex align-items-center gap-2">
-                    <i className="bi bi-calendar"></i>
-                    <span>01/05/2024 - 23/05/2024</span>
-                  </div>
-                  <select className="form-select w-auto">
-                    <option>Daily</option>
-                    <option>Weekly</option>
-                  </select>
-                  <select className="form-select w-auto">
-                    <option>All</option>
-                    <option>On Time</option>
-                    <option>Late</option>
-                    <option>Leave</option>
-                  </select>
+              <div className="bg-white p-3 rounded shadow">
+                <div className="d-flex justify-content-between mb-3">
+                  <h4>My Attendance History</h4>
+                  <span className="badge bg-success">{percentage}%</span>
                 </div>
 
                 <table className="table">
                   <thead>
                     <tr>
                       <th>Date</th>
-                      <th>Check-In Time</th>
-                      <th>Check-Out Time</th>
+                      <th>Check In</th>
+                      <th>Check Out</th>
                       <th>Status</th>
-                      <th>Notes</th>
+                      <th>Note</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>23 May</td>
-                      <td>9:04 AM</td>
-                      <td>4:56 PM</td>
-                      <td><i className="bi bi-check-circle-fill text-success"></i></td>
-                      <td>On time</td>
-                    </tr>
-                    <tr>
-                      <td>22 May</td>
-                      <td>–</td>
-                      <td>–</td>
-                      <td><i className="bi bi-x-circle-fill text-danger"></i></td>
-                      <td>Leave</td>
-                    </tr>
-                    <tr>
-                      <td>21 May</td>
-                      <td>9:17 AM</td>
-                      <td>4:40 PM</td>
-                      <td><i className="bi bi-check-circle-fill text-success"></i></td>
-                      <td>Late-entry</td>
-                    </tr>
+                    {attendance.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="text-center">
+                          No attendance data
+                        </td>
+                      </tr>
+                    ) : (
+                      attendance.map((item, idx) => (
+                        <tr key={idx}>
+                          <td>{item.date}</td>
+                          <td>{item.check_in || "–"}</td>
+                          <td>{item.check_out || "–"}</td>
+                          <td>{item.status}</td>
+                          <td>{item.note || "-"}</td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
 
-          <div className="mt-3">
-            <Footer />
-          </div>
+          <Footer className="mt-3" />
         </div>
       </div>
     </div>

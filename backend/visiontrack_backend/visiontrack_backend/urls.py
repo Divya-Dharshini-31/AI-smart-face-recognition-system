@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('api/notifications/', include('notifications.urls')),
+    path('api/', include('attendance.urls')),
 ]

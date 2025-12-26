@@ -19,6 +19,7 @@ INSTALLED_APPS = [
 
     'users',
     'notifications',
+    'attendance',
 ]
 
 DATABASES = {
