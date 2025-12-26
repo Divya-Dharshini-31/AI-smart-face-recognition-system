@@ -38,15 +38,26 @@ deactivate nondestructive
 
 # on Windows, a path can contain colons and backslashes and has to be converted:
 case "$(uname)" in
+<<<<<<< HEAD
     CYGWIN*|MSYS*|MINGW*)
         # transform D:\path\to\venv to /d/path/to/venv on MSYS and MINGW
         # and to /cygdrive/d/path/to/venv on Cygwin
         VIRTUAL_ENV=$(cygpath 'C:\Users\harsi\OneDrive\Documents\GitHub\AI-smart-face-recognition-system\backend\venv')
+=======
+    CYGWIN*|MSYS*)
+        # transform D:\path\to\venv to /d/path/to/venv on MSYS
+        # and to /cygdrive/d/path/to/venv on Cygwin
+        VIRTUAL_ENV=$(cygpath "C:\Users\HP\Desktop\AI-smart-face-recognition-system\backend\venv")
+>>>>>>> 0ad33d0bb03ec1916861c6660dba711214ba40f3
         export VIRTUAL_ENV
         ;;
     *)
         # use the path as-is
+<<<<<<< HEAD
         export VIRTUAL_ENV='C:\Users\harsi\OneDrive\Documents\GitHub\AI-smart-face-recognition-system\backend\venv'
+=======
+        export VIRTUAL_ENV="C:\Users\HP\Desktop\AI-smart-face-recognition-system\backend\venv"
+>>>>>>> 0ad33d0bb03ec1916861c6660dba711214ba40f3
         ;;
 esac
 
@@ -54,7 +65,11 @@ _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/"Scripts":$PATH"
 export PATH
 
+<<<<<<< HEAD
 VIRTUAL_ENV_PROMPT=venv
+=======
+VIRTUAL_ENV_PROMPT="venv"
+>>>>>>> 0ad33d0bb03ec1916861c6660dba711214ba40f3
 export VIRTUAL_ENV_PROMPT
 
 # unset PYTHONHOME if set

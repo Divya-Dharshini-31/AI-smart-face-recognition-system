@@ -1,18 +1,44 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Footer from "../components/Footer";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function ResetPassword() {
-  const [pass, setPass] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [confirmVisible, setConfirmVisible] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
 
-  const handleReset = () => {
-    if (pass === confirm) navigate("/");
-    else alert("Passwords do not match!");
+  const email = location.state?.email || localStorage.getItem("reset_email");
+
+  useEffect(() => {
+    if (!email) navigate("/forgot-email");
+  }, [email, navigate]);
+
+  const [pass, setPass] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const resetPassword = async () => {
+    if (pass !== confirm) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+    const res = await fetch("http://localhost:8000/api/reset-password/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password: pass }),
+    });
+
+    const data = await res.json();
+    setLoading(false);
+
+    if (data.success) {
+      localStorage.removeItem("reset_email");
+      alert("Password reset successful");
+      navigate("/signin");
+    } else {
+      alert(data.message);
+    }
   };
 
   return (
@@ -22,65 +48,51 @@ function ResetPassword() {
     >
       <div
         className="d-flex shadow rounded overflow-hidden"
-        style={{ width: "80%", maxWidth: "1000px", height: "85%" }}
+        style={{ width: "80%", maxWidth: "1000px", height: "80%" }}
       >
-        {/* Left Image */}
+        {/* Left Logo */}
         <div className="w-50 h-100">
           <img
-            src="/reset.jpeg"
-            alt="reset"
-            style={{ width: "100%", height: "100%"}}
+            src="/logo.jpeg"
+            alt="VisionTrack"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </div>
 
-        {/* Right Section */}
+        {/* Right Content */}
         <div className="w-50 d-flex flex-column justify-content-between p-4 bg-white">
-          <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
-            <h3 className="text-primary fw-bold mb-4">Reset Password</h3>
+          <div className="flex-grow-1 d-flex flex-column justify-content-center">
+            <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+              <h3 className="text-primary fw-bold mb-3 text-center">
+                Reset Password
+              </h3>
 
-            <div className="input-group mb-3" style={{ maxWidth: "400px", width: "100%" }}>
               <input
-                type={visible ? "text" : "password"}
-                className="form-control bg-info-subtle"
-                placeholder="Password"
+                type="password"
+                className="form-control mb-3 bg-info-subtle"
+                placeholder="New Password"
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
               />
-              <span
-                className="input-group-text"
-                onClick={() => setVisible(!visible)}
-                style={{ cursor: "pointer" }}
-              >
-                {visible ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
 
-            <div className="input-group mb-4" style={{ maxWidth: "400px", width: "100%" }}>
               <input
-                type={confirmVisible ? "text" : "password"}
-                className="form-control bg-info-subtle"
+                type="password"
+                className="form-control mb-3 bg-info-subtle"
                 placeholder="Confirm Password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
               />
-              <span
-                className="input-group-text"
-                onClick={() => setConfirmVisible(!confirmVisible)}
-                style={{ cursor: "pointer" }}
-              >
-                {confirmVisible ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
 
-            <button
-              className="btn btn-info px-5 py-2 fs-5"
-              onClick={handleReset}
-            >
-              Reset Password
-            </button>
+              <button
+                className="btn btn-info w-100"
+                onClick={resetPassword}
+                disabled={loading}
+              >
+                {loading ? "Resetting..." : "Reset Password"}
+              </button>
+            </div>
           </div>
 
-          {/* Footer */}
           <div className="text-center">
             <Footer />
           </div>

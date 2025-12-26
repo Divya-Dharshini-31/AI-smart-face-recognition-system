@@ -6,19 +6,54 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleForgot = () => {
-    if (!email.trim()) alert("Please enter email to continue");
-    else navigate("/otp");
+  navigate("/forgot-email");
+  };
+
+  const handleSignIn = async () => {
+    if (!email || !password || !role) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:8000/api/signin/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, role }),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        // Save JWT tokens in localStorage
+        localStorage.setItem("access_token", result.access);
+        localStorage.setItem("refresh_token", result.refresh);
+        alert("Login successful!");
+        navigate("/dashboard"); // redirect to dashboard
+      } else {
+        alert(result.message || "Invalid credentials");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div
-  className="d-flex vh-100 vw-100 align-items-center justify-content-center"
-  style={{ backgroundColor: "#e8e9eb" }}
->
+      className="d-flex vh-100 vw-100 align-items-center justify-content-center"
+      style={{ backgroundColor: "#e8e9eb" }}
+    >
       <div
         className="d-flex shadow rounded overflow-hidden"
         style={{ width: "80%", maxWidth: "1000px", height: "80%" }}
@@ -63,7 +98,12 @@ function SignIn() {
                     {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                   </span>
                 </div>
-                <select className="form-control mb-3 bg-info-subtle" required>
+                <select
+                  className="form-control mb-3 bg-info-subtle"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required
+                >
                   <option value="">Select Role</option>
                   <option>Admin</option>
                   <option>Teacher</option>
@@ -81,9 +121,10 @@ function SignIn() {
                 <button
                   type="button"
                   className="btn btn-info w-100 mb-2"
-                  onClick={() => navigate("/dashboard")}
+                  onClick={handleSignIn}
+                  disabled={loading}
                 >
-                  Sign In
+                  {loading ? "Signing in..." : "Sign In"}
                 </button>
                 <p className="text-center">
                   Don’t have an account?{" "}
