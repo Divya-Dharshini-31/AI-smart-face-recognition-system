@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Sidebarsmall from "../components/Sidebarsmall";
 import Topbar from "../components/Topbar";
+import { useNavigate } from "react-router-dom";
+
 import {
   BarChart,
   Bar,
@@ -19,6 +21,8 @@ const COLORS = ["#00C49F", "#FF8042"];
 function AdminReportPage() {
   const [month, setMonth] = useState(7); // July default
   const [year] = useState(2025);
+  const navigate = useNavigate();
+
 
   const [summary, setSummary] = useState({
     total_days: 0,
@@ -151,12 +155,19 @@ function AdminReportPage() {
             </div>
           </div>
 
-          {/* Download Button */}
-          <div className="mt-auto d-flex justify-content-end">
-            <button className="btn btn-outline-secondary">
-              Download Report
-            </button>
-          </div>
+         <div className="mt-3 d-flex justify-content-end">
+  <button
+    className="btn btn-outline-secondary"
+    style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+    onClick={() =>
+      navigate(`/admin/report-view?month=${month}&year=${year}`)
+    }
+  >
+    Download Report
+  </button>
+</div>
+
+
 
           <Footer />
         </div>

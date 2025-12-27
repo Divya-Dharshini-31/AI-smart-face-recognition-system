@@ -14,6 +14,8 @@ import ResetPassword from './pages/ResetPassword';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ForgotEmail from './pages/ForgotEmail';
+import ReportViewPage from "./pages/ReportViewPage";
+
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
         <Route path="/leave-requests" element={<LeaveRequests />} />
         <Route path="/leave-approval" element={<LeaveApproval />} />
         <Route path="/notifications" element={<AdminNotifications />} />
+        <Route path="/admin/report-view" element={<ReportViewPage />} />
+
       </Routes>
     </Router>
   );

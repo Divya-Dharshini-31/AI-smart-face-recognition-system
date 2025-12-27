@@ -3,6 +3,6 @@ from .views import admin_report,my_attendance_history
 
 urlpatterns = [
     path("admin-report/", admin_report),
-    path("my-attendance/", my_attendance_history),
+    path("attendance-history/", my_attendance_history),
 ]
 
