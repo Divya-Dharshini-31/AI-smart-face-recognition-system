@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from core.db import notifications_col
 # Create your views here.
 from rest_framework.decorators import api_view
 from rest_framework.response import Response

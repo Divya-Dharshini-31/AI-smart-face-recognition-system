@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import date
-
+from core.db import attendance_col
 from .models import Attendance
 from .serializers import AttendanceHistorySerializer
 
@@ -121,4 +121,57 @@ def my_attendance_history(request):
     return Response({
         "attendance": serializer.data,
         "percentage": percentage
+    })
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from datetime import datetime
+from core.db import attendance_col
+from .models import Attendance, Person
+
+
+@api_view(["POST"])
+def mark_attendance(request):
+    """
+    Called by camera module
+    """
+    data = request.data
+
+    username = data.get("username")
+    status = data.get("status", "present")
+    check_in = data.get("check_in")
+
+    if not username:
+        return Response({"error": "Username required"}, status=400)
+
+    try:
+        person = Person.objects.get(user__username=username)
+    except Person.DoesNotExist:
+        return Response({"error": "Person not found"}, status=404)
+
+    today = datetime.today().date()
+
+    # ---------- DJANGO DB ----------
+    attendance_obj, created = Attendance.objects.get_or_create(
+        person=person,
+        date=today,
+        defaults={
+            "status": status,
+            "check_in": check_in,
+            "marked_by_face": True
+        }
+    )
+
+    # ---------- MONGO DB ----------
+    attendance_col.insert_one({
+        "username": username,
+        "date": str(today),
+        "status": status,
+        "check_in": check_in,
+        "source": "camera"
+    })
+
+    return Response({
+        "message": "Attendance marked",
+        "created": created
     })

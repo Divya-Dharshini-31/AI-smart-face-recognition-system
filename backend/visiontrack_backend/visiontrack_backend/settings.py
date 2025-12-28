@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-dev-key'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.56.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'users',
     'notifications',
     'attendance',
+    'core',
 ]
 
 DATABASES = {
@@ -62,6 +63,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'visiontrack_backend.wsgi.application'
+MONGO_URI = "mongodb+srv://VisionAdmin:vision-23-ADMIN@visiontrack.jh77ask.mongodb.net/VisionTrack"
+MONGO_DB_NAME = "VisionTrack"
 
 # ❌ No DATABASES (MongoEngine does NOT use Django ORM)
 
