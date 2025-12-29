@@ -1,11 +1,8 @@
 from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = 'django-insecure-dev-key'
 DEBUG = True
-ALLOWED_HOSTS = ['192.168.56.1']
-
+ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -13,10 +10,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'corsheaders',
-
     'users',
     'notifications',
     'attendance',
