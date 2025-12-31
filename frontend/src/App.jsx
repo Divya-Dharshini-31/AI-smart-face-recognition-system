@@ -14,7 +14,8 @@ import ResetPassword from './pages/ResetPassword';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ForgotEmail from './pages/ForgotEmail';
-import Settings from './pages/Settings';
+import ReportViewPage from "./pages/ReportViewPage";
+
 
 function App() {
   return (
@@ -26,7 +27,6 @@ function App() {
         <Route path="/forgot-email" element={<ForgotEmail />} />
         <Route path="/otp-verification" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/settings" element={<Settings />}/>
         <Route path="/add-edit-user" element={<AddEditUser />} />
         <Route path="/admin-report" element={<AdminReportPage />} />
         <Route path="/attendance-history" element={<AttendanceHistory />} />
@@ -36,6 +36,8 @@ function App() {
         <Route path="/leave-requests" element={<LeaveRequests />} />
         <Route path="/leave-approval" element={<LeaveApproval />} />
         <Route path="/notifications" element={<AdminNotifications />} />
+        <Route path="/admin/report-view" element={<ReportViewPage />} />
+
       </Routes>
     </Router>
   );

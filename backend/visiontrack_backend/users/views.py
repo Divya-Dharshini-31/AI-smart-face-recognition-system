@@ -10,7 +10,7 @@ from rest_framework import status
 from .serializers import SignInSerializer
 from .models import User,OTP
 from .serializers import UserSerializer,ForgotEmailSerializer,OTPVerifySerializer,ResetPasswordSerializer
-from .db import connect  # ensures MongoDB connects
+from core.db import users_col
 from django.contrib.auth.hashers import check_password
 import jwt
 from django.conf import settings
