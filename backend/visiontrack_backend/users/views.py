@@ -51,46 +51,44 @@ class SignUpView(APIView):
 class SignInView(APIView):
     def post(self, request):
         serializer = SignInSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
-            role = serializer.validated_data['role']
 
-            user = User.objects(email=email, role=role).first()
-            if not user:
-                return Response(
-                    {"success": False, "message": "Invalid credentials"},
-                    status=status.HTTP_401_UNAUTHORIZED
-                )
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            if not check_password(password, user.password):
-                return Response(
-                    {"success": False, "message": "Invalid credentials"},
-                    status=status.HTTP_401_UNAUTHORIZED
-                )
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
+        role = serializer.validated_data['role'].capitalize()
 
-            payload = {
-                "email": user.email,
-                "role": user.role
-            }
+        user = User.objects(email=email, role=role).first()
+        if not user:
+            return Response(
+                {"success": False, "message": "Invalid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-            access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        if not check_password(password, user.password):
+            return Response(
+                {"success": False, "message": "Invalid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-            return Response({
+        payload = {
+            "email": user.email,
+            "role": user.role
+        }
+
+        access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        if isinstance(access_token, bytes):
+            access_token = access_token.decode("utf-8")
+
+        return Response(
+            {
                 "success": True,
-                "access": access_token,
-                "user": {
-                    "email": user.email,
-                    "first_name": user.first_name,
-                    "last_name": user.last_name,
-                    "role": user.role,
-                    "phone": user.mobile
-                }
-            }, status=status.HTTP_200_OK)
+                "access": access_token
+            },
+            status=status.HTTP_200_OK
+        )
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -206,51 +204,3 @@ class ResetPasswordView(APIView):
             return Response({"success": True, "message": "Password reset successful"})
 
         return Response(serializer.errors, status=400)
-
-class UserProfileView(APIView):
-    def get(self, request):
-        token = request.headers.get("Authorization")
-
-        if not token:
-            return Response(
-                {"success": False, "message": "Token missing"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        try:
-            payload = jwt.decode(
-                token.split(" ")[1],
-                settings.SECRET_KEY,
-                algorithms=["HS256"]
-            )
-            email = payload["email"]
-
-            user = User.objects(email=email).first()
-            if not user:
-                return Response(
-                    {"success": False, "message": "User not found"},
-                    status=status.HTTP_404_NOT_FOUND
-                )
-
-            return Response({
-                "success": True,
-                "user": {
-                    "email": user.email,
-                    "first_name": user.first_name,
-                    "last_name": user.last_name,
-                    "role": user.role,
-                    "phone": user.mobile
-                }
-            }, status=status.HTTP_200_OK)
-
-        except jwt.ExpiredSignatureError:
-            return Response(
-                {"success": False, "message": "Token expired"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-        except jwt.InvalidTokenError:
-            return Response(
-                {"success": False, "message": "Invalid token"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
