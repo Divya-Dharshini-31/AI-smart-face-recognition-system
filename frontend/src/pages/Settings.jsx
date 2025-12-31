@@ -68,11 +68,15 @@ function Settings() {
   };
 
   return (
-    <div className="d-flex flex-column" style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+    <div className="d-flex flex-column" style={{ width: "100vw", height: "100vh", overflow: "hidden"}}>
       <Topbar />
 
-      <div className="d-flex flex-grow-1">
-        <Sidebar />
+      <div className="d-flex" style={{ flexGrow: 1, overflow: "hidden" }}>
+
+        <div style={{ width: "250px", flexShrink: 0 }}>
+  <Sidebar />
+</div>
+
 
         <div className="flex-grow-1 p-4" style={{ backgroundColor: "#dffdff", overflowY: "auto" }}>
           <h4 className="fw-bold mb-4">Settings</h4>
@@ -90,8 +94,8 @@ function Settings() {
               <div className="bg-white p-4 rounded-4 shadow-sm">
 
                 {/* Profile Header */}
-                <div className="d-flex align-items-center gap-4 mb-4">
-                  <div className="text-center">
+                <div className="row mb-4">
+                  <div className="col-md-4 text-center">
                     <img
                       src={profile.profilePreview || "/default-avatar.png"}
                       alt="Profile"
@@ -123,12 +127,17 @@ function Settings() {
                       </>
                     )}
                   </div>
-
-                  <div>
-                    <h5 className="fw-bold mb-1">{profile.name || "User Name"}</h5>
-                    <p className="text-muted mb-0">{profile.role}</p>
+                  <div style={{ marginTop: "-10px", marginLeft: "-6px"}} className="col-md-8 d-flex flex-column justify-content-center">
+                    <h3 className="fw-bold mb-1">
+                      {profile.name || "User Name"}
+                    </h3>
+                    <p className="text-secondary fs-5 mb-0">
+                      {profile.role}
+                    </p>
                   </div>
+
                 </div>
+
 
                 {/* Form */}
                 <div className="row g-3">

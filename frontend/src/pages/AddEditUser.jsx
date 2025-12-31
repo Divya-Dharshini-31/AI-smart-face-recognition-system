@@ -140,24 +140,6 @@ function AddEditUser() {
                 </div>
               </div>
 
-              {/* Password Section */}
-              <div className="mt-3">
-                <label className="form-label fw-semibold">
-                  Temporary Password
-                </label>
-                <input
-                  type="password"
-                  name="tempPassword"
-                  className="form-control"
-                  value={formData.tempPassword}
-                  onChange={handleChange}
-                  placeholder="Temporary password for first login"
-                />
-                <small className="text-muted">
-                  User will be asked to change password after login
-                </small>
-              </div>
-
               {/* Action Buttons */}
               <div className="mt-4 d-flex justify-content-center gap-3">
                 <button
@@ -167,7 +149,7 @@ function AddEditUser() {
                   Create User
                 </button>
                 <button className="btn btn-outline-secondary px-5">
-                  Cancel
+                  Created Records
                 </button>
               </div>
             </div>
