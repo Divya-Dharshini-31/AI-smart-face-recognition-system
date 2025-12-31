@@ -5,7 +5,6 @@ from core.db import attendance_col
 from .models import Attendance
 from .serializers import AttendanceHistorySerializer
 
-
 # ===================== REPORT HELPERS =====================
 
 def monthly_report(month, year):
