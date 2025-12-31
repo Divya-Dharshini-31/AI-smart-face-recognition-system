@@ -15,6 +15,8 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ForgotEmail from './pages/ForgotEmail';
 import ReportViewPage from "./pages/ReportViewPage";
+import Settings from './pages/Settings';
+
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
         <Route path="/forgot-email" element={<ForgotEmail />} />
         <Route path="/otp-verification" element={<OTPVerification />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/add-edit-user" element={<AddEditUser />} />
         <Route path="/admin-report" element={<AdminReportPage />} />
         <Route path="/attendance-history" element={<AttendanceHistory />} />

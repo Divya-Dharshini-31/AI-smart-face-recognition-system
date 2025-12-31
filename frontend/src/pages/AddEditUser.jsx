@@ -2,148 +2,162 @@ import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
-import "bootstrap-icons/font/bootstrap-icons.css";
 
 function AddEditUser() {
   const [formData, setFormData] = useState({
     fullName: "",
-    gender: "",
-    phone: "",
     email: "",
+    role: "",
     registerNo: "",
+    phone: "",
     department: "",
-    address: "",
-    dob: "",
-    profileImg: null,
+    tempPassword: "",
   });
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({ ...formData, [name]: files ? files[0] : value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = () => {
-    console.log("Submitted:", formData);
+    console.log("New User Created:", formData);
   };
 
   return (
-    <div className="d-flex flex-column" style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <div
+      className="d-flex flex-column"
+      style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
+    >
       {/* Topbar */}
       <Topbar />
 
       {/* Layout */}
-      <div className="d-flex" style={{ flexGrow: 1, overflow: "hidden" }}>
-        {/* Sidebar */}
+      <div className="d-flex flex-grow-1" style={{ overflow: "hidden" }}>
         <Sidebar />
 
         {/* Main Content */}
-        <div className="flex-grow-1 p-4 overflow-auto" style={{ backgroundColor: "#e6f8fb" }}>
-          <div className="bg-white rounded-4 shadow p-4 mx-auto" style={{ maxWidth: "1000px" }}>
-            <h3 className="text-center fw-bold mb-4">Add / Edit User</h3>
-            <div className="row">
-              {/* Left Form */}
-              <div className="col-md-6 pe-md-4 border-end">
-                <div className="text-center mb-3">
-                  <div
-                    className="rounded-circle bg-secondary d-flex justify-content-center align-items-center mx-auto"
-                    style={{ width: "100px", height: "100px" }}
-                  >
-                    <i className="bi bi-person-fill text-white" style={{ fontSize: "2rem" }}></i>
+        <div
+          className="flex-grow-1 d-flex justify-content-center align-items-start p-4"
+          style={{ backgroundColor: "#dffdff", overflowY: "auto" }}
+        >
+          <div style={{ width: "100%", maxWidth: "900px" }}>
+            {/* Page Heading */}
+            <h4 className="fw-bold mb-4 text-center">Add User</h4>
+
+            {/* Form Card */}
+            <div className="bg-white p-4 rounded-4 shadow-sm">
+              <h5 className="fw-semibold mb-4 text-center">
+                User Information
+              </h5>
+
+              <div className="row">
+                {/* Left Column */}
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold">Full Name</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      className="form-control"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      placeholder="Enter full name"
+                    />
                   </div>
-                  <input
-                    type="file"
-                    name="profileImg"
-                    onChange={handleChange}
-                    accept="image/*"
-                    className="form-control mt-2"
-                  />
+
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold">
+                      Official Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      className="form-control"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="example@institution.com"
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold">Role</label>
+                    <select
+                      name="role"
+                      className="form-control"
+                      value={formData.role}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select Role</option>
+                      <option>Student</option>
+                      <option>Teacher</option>
+                    </select>
+                  </div>
                 </div>
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Full Name"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                />
-                <select
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                >
-                  <option value="">Select Gender</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Others</option>
-                </select>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                />
+
+                {/* Right Column */}
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold">
+                      Register Number / Employee ID
+                    </label>
+                    <input
+                      type="text"
+                      name="registerNo"
+                      className="form-control"
+                      value={formData.registerNo}
+                      onChange={handleChange}
+                      placeholder="Unique ID"
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      className="form-control"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Contact number"
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label fw-semibold">
+                      Department
+                    </label>
+                    <input
+                      type="text"
+                      name="department"
+                      className="form-control"
+                      value={formData.department}
+                      onChange={handleChange}
+                      placeholder="Department name"
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Right Form */}
-              <div className="col-md-6 ps-md-4 mt-4 mt-md-0">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                />
-                <input
-                  type="text"
-                  name="registerNo"
-                  placeholder="Register Number"
-                  value={formData.registerNo}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                />
-                <input
-                  type="text"
-                  name="department"
-                  placeholder="Department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                />
-                <textarea
-                  name="address"
-                  rows="2"
-                  placeholder="Address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                />
-                <input
-                  type="date"
-                  name="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
-                  className="form-control mb-2 bg-info-subtle"
-                />
-                <div className="text-center mt-3">
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="btn btn-info fw-bold px-4"
-                  >
-                    DONE
-                  </button>
-                </div>
+              {/* Action Buttons */}
+              <div className="mt-4 d-flex justify-content-center gap-3">
+                <button
+                  className="btn btn-info px-5"
+                  onClick={handleSubmit}
+                >
+                  Create User
+                </button>
+                <button className="btn btn-outline-secondary px-5">
+                  Created Records
+                </button>
               </div>
             </div>
-          </div>
 
-          {/* Footer */}
-          <div className="mt-4">
-            <Footer />
+            {/* Footer */}
+            <div className="mt-4">
+              <Footer />
+            </div>
           </div>
         </div>
       </div>

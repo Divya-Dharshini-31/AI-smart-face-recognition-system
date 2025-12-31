@@ -1,14 +1,17 @@
 import React from 'react';
 import '../styles/Sidebar.css';
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
   return (
     <div className="sidebar border-end p-3" style={{ width: '250px', minHeight: '100vh', backgroundColor: 'white' }}>
       <ul className="nav flex-column">
-        <li className="nav-item mb-3">
+        <li className="nav-item mb-3" onClick={() => navigate("/dashboard")}>
           <a className="nav-link text-dark" href="#"><i className="bi bi-house me-2"></i>Home</a>
         </li>
-        <li className="nav-item mb-3">
+        <li className="nav-item mb-3" onClick={() => navigate("/add-edit-user")}>
           <a className="nav-link text-dark" href="#"><i className="bi bi-person-plus me-2"></i>Add/Edit Users</a>
         </li>
         <li className="nav-item mb-3">

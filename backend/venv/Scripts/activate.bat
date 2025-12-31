@@ -9,18 +9,22 @@ if defined _OLD_CODEPAGE (
 )
 
 <<<<<<< HEAD
+set VIRTUAL_ENV=C:\Users\harsh\Documents\GitHub\AI-smart-face-recognition-system\backend\venv
+=======
+<<<<<<< HEAD
 set "VIRTUAL_ENV=C:\Users\harsi\OneDrive\Documents\GitHub\AI-smart-face-recognition-system\backend\venv"
 =======
 set VIRTUAL_ENV=C:\Users\HP\Desktop\AI-smart-face-recognition-system\backend\venv
 >>>>>>> 0ad33d0bb03ec1916861c6660dba711214ba40f3
+>>>>>>> main
 
 if not defined PROMPT set PROMPT=$P$G
 
 if defined _OLD_VIRTUAL_PROMPT set PROMPT=%_OLD_VIRTUAL_PROMPT%
 if defined _OLD_VIRTUAL_PYTHONHOME set PYTHONHOME=%_OLD_VIRTUAL_PYTHONHOME%
 
-set "_OLD_VIRTUAL_PROMPT=%PROMPT%"
-set "PROMPT=(venv) %PROMPT%"
+set _OLD_VIRTUAL_PROMPT=%PROMPT%
+set PROMPT=(venv) %PROMPT%
 
 if defined PYTHONHOME set _OLD_VIRTUAL_PYTHONHOME=%PYTHONHOME%
 set PYTHONHOME=
@@ -33,8 +37,12 @@ set "PATH=%VIRTUAL_ENV%\Scripts;%PATH%"
 set "VIRTUAL_ENV_PROMPT=venv"
 =======
 set PATH=%VIRTUAL_ENV%\Scripts;%PATH%
+<<<<<<< HEAD
+set VIRTUAL_ENV_PROMPT=(venv) 
+=======
 set VIRTUAL_ENV_PROMPT=venv
 >>>>>>> 0ad33d0bb03ec1916861c6660dba711214ba40f3
+>>>>>>> main
 
 :END
 if defined _OLD_CODEPAGE (

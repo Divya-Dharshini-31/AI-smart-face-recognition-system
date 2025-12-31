@@ -25,3 +25,11 @@ class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(min_length=6)
 
+class ProfileSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    role = serializers.CharField()
+    mobile = serializers.CharField()
+
+
