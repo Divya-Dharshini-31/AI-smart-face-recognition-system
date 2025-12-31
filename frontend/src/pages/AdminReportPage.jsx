@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Sidebarsmall from "../components/Sidebarsmall";
 import Topbar from "../components/Topbar";
+import { useNavigate } from "react-router-dom";
+
 import {
   BarChart,
   Bar,
@@ -14,80 +16,103 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const barData = [
-  { name: "Week 1", Present: 5, Absent: 2 },
-  { name: "Week 2", Present: 6, Absent: 1 },
-  { name: "Week 3", Present: 5, Absent: 2 },
-  { name: "Week 4", Present: 6, Absent: 1 },
-];
-
-const pieDataStudent = [
-  { name: "Present", value: 75 },
-  { name: "Absent", value: 25 },
-];
-
-const pieDataTeacher = [
-  { name: "Present", value: 85 },
-  { name: "Absent", value: 15 },
-];
-
 const COLORS = ["#00C49F", "#FF8042"];
 
 function AdminReportPage() {
+  const [month, setMonth] = useState(7); // July default
+  const [year] = useState(2025);
+  const navigate = useNavigate();
+
+
+  const [summary, setSummary] = useState({
+    total_days: 0,
+    present: 0,
+    absent: 0,
+  });
+
+  const [barData, setBarData] = useState([]);
+  const [pieStudent, setPieStudent] = useState([]);
+  const [pieTeacher, setPieTeacher] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      `http://127.0.0.1:8000/api/admin-report/?month=${month}&year=${year}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setSummary(data.summary);
+        setBarData(data.weekly);
+        setPieStudent(data.studentPie);
+        setPieTeacher(data.teacherPie);
+      })
+      .catch((err) => console.error("API Error:", err));
+  }, [month, year]);
+
   return (
-    <div className="d-flex flex-column" style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
-      {/* Topbar */}
+    <div
+      className="d-flex flex-column"
+      style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
+    >
       <Topbar />
 
-      {/* Layout */}
-      <div className="d-flex" style={{ flexGrow: 1, overflow: "hidden" }}>
-        {/* Sidebar */}
+      <div className="d-flex" style={{ flexGrow: 1 }}>
         <Sidebarsmall />
 
-        {/* Main Content */}
-        <div className="flex-grow-1 d-flex flex-column p-3 overflow-auto" style={{ backgroundColor: "#e6f8fb" }}>
+        <div
+          className="flex-grow-1 d-flex flex-column p-3 overflow-auto"
+          style={{ backgroundColor: "#e6f8fb" }}
+        >
           {/* Month Selector */}
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <select className="form-select w-auto" style={{ minWidth: "200px" }}>
-              <option>Select Month</option>
-              <option>June</option>
-              <option>July</option>
-              <option>August</option>
+            <select
+              className="form-select w-auto"
+              value={month}
+              onChange={(e) => setMonth(Number(e.target.value))}
+            >
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
             </select>
+
             <div className="text-end">
-              <img src="/celebration.jpeg" alt="Fly" style={{ width: "50px", height: "50px" }} />
+              <img
+                src="/celebration.jpeg"
+                alt="Fly"
+                style={{ width: "50px", height: "50px" }}
+              />
               <div className="small">Fly to the month</div>
             </div>
           </div>
 
-          {/* Cards */}
+          {/* Summary Cards */}
           <div className="row g-3 mb-3">
             <div className="col-4">
               <div className="bg-light text-center p-2 rounded shadow">
                 <h6>Total Days</h6>
-                <div className="fw-bold">30</div>
+                <div className="fw-bold">{summary.total_days}</div>
               </div>
             </div>
             <div className="col-4">
               <div className="bg-success-subtle text-center p-2 rounded shadow">
                 <h6>Present</h6>
-                <div className="fw-bold">27</div>
+                <div className="fw-bold">{summary.present}</div>
               </div>
             </div>
             <div className="col-4">
               <div className="bg-danger-subtle text-center p-2 rounded shadow">
                 <h6>Absent</h6>
-                <div className="fw-bold">3</div>
+                <div className="fw-bold">{summary.absent}</div>
               </div>
             </div>
           </div>
 
           {/* Charts */}
           <div className="row g-3">
+            {/* Bar Chart */}
             <div className="col-6">
               <div className="bg-white p-2 rounded shadow">
                 <h6 className="text-center">Weekly Attendance</h6>
-                <div style={{ width: "100%", height: 180 }}>
+                <div style={{ height: 200 }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={barData}>
                       <XAxis dataKey="name" />
@@ -101,91 +126,50 @@ function AdminReportPage() {
               </div>
             </div>
 
-            <div className="col-3">
-              <div className="text-center fw-bold mb-2">Student-wise</div>
-              <div style={{ width: "100%", paddingTop: "100%", position: "relative" }}>
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={pieDataStudent}
-                        dataKey="value"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius="80%"
-                      >
-                        {pieDataStudent.map((entry, index) => (
-                          <Cell
-                            key={`student-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+            {/* Student Pie */}
+            <div className="col-3 text-center">
+              <h6>Student-wise</h6>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie data={pieStudent} dataKey="value" outerRadius={80}>
+                    {pieStudent.map((_, i) => (
+                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
             </div>
 
-            <div className="col-3">
-              <div className="text-center fw-bold mb-2">Teacher-wise</div>
-              <div style={{ width: "100%", paddingTop: "100%", position: "relative" }}>
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={pieDataTeacher}
-                        dataKey="value"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius="80%"
-                      >
-                        {pieDataTeacher.map((entry, index) => (
-                          <Cell
-                            key={`teacher-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+            {/* Teacher Pie */}
+            <div className="col-3 text-center">
+              <h6>Teacher-wise</h6>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie data={pieTeacher} dataKey="value" outerRadius={80}>
+                    {pieTeacher.map((_, i) => (
+                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Download Button */}
-          <div className="mt-auto d-flex justify-content-end align-items-center">
-            <button className="btn btn-outline-secondary d-flex align-items-center">
-              <img
-                src="/download-icon.png"
-                alt="Download"
-                style={{ width: "20px", height: "20px", marginRight: "8px" }}
-              />
-              Download Report
-            </button>
-          </div>
+         <div className="mt-3 d-flex justify-content-end">
+  <button
+    className="btn btn-outline-secondary"
+    style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+    onClick={() =>
+      navigate(`/admin/report-view?month=${month}&year=${year}`)
+    }
+  >
+    Download Report
+  </button>
+</div>
 
-          {/* Footer */}
-          <div className="mt-3">
-            <Footer />
-          </div>
+
+
+          <Footer />
         </div>
       </div>
     </div>

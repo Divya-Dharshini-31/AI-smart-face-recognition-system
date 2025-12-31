@@ -1,11 +1,8 @@
 from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = 'django-insecure-dev-key'
 DEBUG = True
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -13,11 +10,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'corsheaders',
-
     'users',
+    'notifications',
+    'attendance',
+    'core',
 ]
 
 DATABASES = {
@@ -60,6 +58,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'visiontrack_backend.wsgi.application'
+MONGO_URI = "mongodb+srv://VisionAdmin:vision-23-ADMIN@visiontrack.jh77ask.mongodb.net/VisionTrack"
+MONGO_DB_NAME = "VisionTrack"
 
 # ❌ No DATABASES (MongoEngine does NOT use Django ORM)
 
