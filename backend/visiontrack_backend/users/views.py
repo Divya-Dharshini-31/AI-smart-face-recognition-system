@@ -51,35 +51,44 @@ class SignUpView(APIView):
 class SignInView(APIView):
     def post(self, request):
         serializer = SignInSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
-            role = serializer.validated_data['role']
 
-            # Find user
-            user = User.objects(email=email, role=role).first()
-            if not user:
-                return Response({"success": False, "message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            # Check hashed password
-            if not check_password(password, user.password):
-                return Response({"success": False, "message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
+        role = serializer.validated_data['role'].capitalize()
 
-            # Create JWT token
-            payload = {
-                "email": user.email,
-                "role": user.role
-            }
-            access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        user = User.objects(email=email, role=role).first()
+        if not user:
+            return Response(
+                {"success": False, "message": "Invalid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-            return Response({
+        if not check_password(password, user.password):
+            return Response(
+                {"success": False, "message": "Invalid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        payload = {
+            "email": user.email,
+            "role": user.role
+        }
+
+        access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        if isinstance(access_token, bytes):
+            access_token = access_token.decode("utf-8")
+
+        return Response(
+            {
                 "success": True,
-                "access": access_token,
-                "refresh": access_token  # simple example, can create separate refresh
-            }, status=status.HTTP_200_OK)
+                "access": access_token
+            },
+            status=status.HTTP_200_OK
+        )
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status

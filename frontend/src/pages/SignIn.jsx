@@ -12,7 +12,7 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const handleForgot = () => {
-  navigate("/forgot-email");
+    navigate("/forgot-email");
   };
 
   const handleSignIn = async () => {
@@ -30,14 +30,20 @@ function SignIn() {
         body: JSON.stringify({ email, password, role }),
       });
 
-      const result = await res.json();
+      const text = await res.text();
+      let result;
 
-      if (result.success) {
-        // Save JWT tokens in localStorage
+      try {
+        result = JSON.parse(text);
+      } catch {
+        throw new Error("Invalid server response");
+      }
+
+      if (res.ok && result.success) {
         localStorage.setItem("access_token", result.access);
         localStorage.setItem("refresh_token", result.refresh);
         alert("Login successful!");
-        navigate("/dashboard"); // redirect to dashboard
+        navigate("/dashboard");
       } else {
         alert(result.message || "Invalid credentials");
       }
@@ -81,6 +87,7 @@ function SignIn() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+
                 <div className="input-group mb-3">
                   <input
                     type={passwordVisible ? "text" : "password"}
@@ -98,6 +105,7 @@ function SignIn() {
                     {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                   </span>
                 </div>
+
                 <select
                   className="form-control mb-3 bg-info-subtle"
                   value={role}
@@ -105,10 +113,11 @@ function SignIn() {
                   required
                 >
                   <option value="">Select Role</option>
-                  <option>Admin</option>
-                  <option>Teacher</option>
-                  <option>Student</option>
+                  <option value="admin">Admin</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="student">Student</option>
                 </select>
+
                 <div className="text-end mb-3">
                   <span
                     className="text-primary"
@@ -118,6 +127,7 @@ function SignIn() {
                     Forgot Your Password?
                   </span>
                 </div>
+
                 <button
                   type="button"
                   className="btn btn-info w-100 mb-2"
@@ -126,6 +136,7 @@ function SignIn() {
                 >
                   {loading ? "Signing in..." : "Sign In"}
                 </button>
+
                 <p className="text-center">
                   Don’t have an account?{" "}
                   <span
@@ -140,7 +151,7 @@ function SignIn() {
             </div>
           </div>
 
-          {/* Footer at bottom */}
+          {/* Footer */}
           <div className="text-center">
             <Footer />
           </div>
