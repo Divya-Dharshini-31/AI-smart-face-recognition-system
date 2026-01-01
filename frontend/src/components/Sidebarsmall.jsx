@@ -6,17 +6,18 @@ function Sidebarsmall() {
   const navigate = useNavigate();
 
   const navItems = [
-    { icon: 'bi-house-door-fill', label: 'Home', path: '/' },
-    { icon: 'bi-speedometer2', label: 'Dashboard', path: '/dashboard' },
+    { icon: 'bi-house-door-fill', label: 'Home', path: '/dashboard' },
     { icon: 'bi-people-fill', label: 'Users', path: '/add-edit-user' },
-    { icon: 'bi-calendar-event', label: 'Calendar', path: '/calendar' },
+
+    // ✅ NEW
+    { icon: 'bi-send-fill', label: 'Send Leave', path: '/send-leave-request' },
+
+    { icon: 'bi-calendar-check-fill', label: 'Leave Requests', path: '/leave-requests' },
     { icon: 'bi-bar-chart-fill', label: 'Reports', path: '/admin-report' },
-    { icon: 'bi-envelope-fill', label: 'Messages', path: '/messages' },
   ];
 
   const handleLogout = () => {
-    alert("Logged out!");
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
@@ -28,8 +29,7 @@ function Sidebarsmall() {
         boxShadow: "2px 0 10px rgba(0,0,0,0.1)",
       }}
     >
-      {/* Icons */}
-      <div className="nav flex-column mt-1" style={{ marginTop: "-10px" }}>
+      <div className="nav flex-column">
         {navItems.map((item, index) => (
           <i
             key={index}
@@ -41,12 +41,9 @@ function Sidebarsmall() {
         ))}
       </div>
 
-      {/* Logout */}
-      <div className="mb-2">
-        <button className="btn btn-sm btn-outline-danger" title="Logout" onClick={handleLogout}>
-          <i className="bi bi-box-arrow-right fs-5"></i>
-        </button>
-      </div>
+      <button className="btn btn-sm btn-outline-danger" onClick={handleLogout}>
+        <i className="bi bi-box-arrow-right fs-5"></i>
+      </button>
     </div>
   );
 }

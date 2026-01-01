@@ -9,6 +9,7 @@ import AdminTeacher from './pages/AdminTeacher';
 import AttendanceHistory from './pages/AttendanceHistory';
 import LeaveApproval from './pages/LeaveApproval';
 import LeaveRequests from './pages/LeaveRequests';
+import SendLeaveRequest from './pages/SendLeaveRequest';
 import OTPVerification from './pages/OTPVerification';
 import ResetPassword from './pages/ResetPassword';
 import SignIn from './pages/SignIn';
@@ -37,9 +38,11 @@ function App() {
         <Route path="/teachers" element={<AdminTeacher />} />
         <Route path="/students" element={<AdminStudent />} />
         <Route path="/leave-requests" element={<LeaveRequests />} />
-        <Route path="/leave-approval" element={<LeaveApproval />} />
+        <Route path="/leave-approval/:id" element={<LeaveApproval />} />
         <Route path="/notifications" element={<AdminNotifications />} />
         <Route path="/admin/report-view" element={<ReportViewPage />} />
+        <Route path="/send-leave-request" element={<SendLeaveRequest />} />
+
 
       </Routes>
     </Router>

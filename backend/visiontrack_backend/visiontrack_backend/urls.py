@@ -22,4 +22,5 @@ urlpatterns = [
     path('api/', include('users.urls')),
     path('api/notifications/', include('notifications.urls')),
     path('api/', include('attendance.urls')),
+    path('api/leaves/', include('leaves.urls')),
 ]
